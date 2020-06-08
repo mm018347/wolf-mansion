@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/wmansiondb?characterEncoding=UTF-8
+    username: wmansionuser
+    password: wmansionpass
+    driverClassName: com.mysql.jdbc.Driver
+  thymeleaf:
+    cache: false
+    mode: HTML
+  messages:
+    basename: messages
+    cache-seconds: -1
+    encoding: UTF-8
+server:
+  port: 8089
+  servlet:
+    context-path: /wolf-mansion
+    session:
+      timeout: 86400
+logging:
+  level:
+    org.springframework: INFO
+    root: INFO
+    org.seasar.dbflute: ERROR
+  file: /var/log/wolf-mansion/tomcat.log
