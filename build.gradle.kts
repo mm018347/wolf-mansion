@@ -16,7 +16,6 @@ repositories {
 }
 
 dependencies {
-    //	implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -26,6 +25,15 @@ dependencies {
     implementation("org.thymeleaf:thymeleaf:3.0.9.RELEASE")
     implementation("org.thymeleaf:thymeleaf-spring4:3.0.9.RELEASE")
     implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.3.0")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa") {
+        exclude("com.zaxxer:HikariCP")
+    }
+    implementation("org.apache.tomcat:tomcat-jdbc:9.0.10")
+    // dbflute
+    implementation("org.dbflute:dbflute-runtime:1.2.1")
+    // mysql
+    implementation("mysql:mysql-connector-java:5.1.44")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
