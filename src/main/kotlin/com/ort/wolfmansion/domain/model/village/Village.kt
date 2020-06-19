@@ -5,7 +5,7 @@ import com.ort.wolfmansion.domain.model.camp.Camp
 data class Village(
     val id: Int,
     val name: String,
-    val creatorPlayerId: Int,
+    val creatorPlayerName: String,
     val status: VillageStatus,
     val winCamp: Camp?,
     val setting: VillageSettings,

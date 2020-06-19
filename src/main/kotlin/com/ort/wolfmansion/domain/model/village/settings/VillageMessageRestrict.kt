@@ -9,5 +9,10 @@ data class VillageMessageRestrict(
     val count: Int,
     val length: Int
 ) {
-
+    fun existsDifference(restrict: VillageMessageRestrict): Boolean {
+        return skill.code != restrict.skill.code
+            || messageType.code != restrict.messageType.code
+            || count != restrict.count
+            || length != restrict.length
+    }
 }

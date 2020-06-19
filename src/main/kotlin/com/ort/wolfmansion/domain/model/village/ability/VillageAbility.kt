@@ -3,9 +3,10 @@ package com.ort.wolfmansion.domain.model.village.ability
 import com.ort.wolfmansion.domain.model.ability.Ability
 
 data class VillageAbility(
-    val villageDayId: Int,
+    val day: Int,
     val myselfId: Int,
     val targetId: Int?,
+    val targetFootstep: String?,
     val ability: Ability
 ) {
 }
