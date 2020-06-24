@@ -1,4 +1,19 @@
 map:{
+    ; 2020/06/22 00:18:42 = map:{
+        ; diffDate = 2020/06/22 00:18:42
+        ; diffAuthor = hitoshi
+        ; diffGitBranch = master
+        ; tableDiff = map:{
+            ; ability = map:{
+                ; tableName = ability
+                ; diffType = ADD
+            }
+            ; abilityType = map:{
+                ; tableName = abilityType
+                ; diffType = DELETE
+            }
+        }
+    }
     ; 2020/06/09 22:48:11 = map:{
         ; diffDate = 2020/06/09 22:48:11
         ; tableCount = map:{
@@ -8,8 +23,8 @@ map:{
         ; diffAuthor = hitoshi
         ; diffGitBranch = master
         ; tableDiff = map:{
-            ; ability = map:{
-                ; tableName = ability
+            ; abilityType = map:{
+                ; tableName = abilityType
                 ; diffType = ADD
             }
             ; ability_type = map:{

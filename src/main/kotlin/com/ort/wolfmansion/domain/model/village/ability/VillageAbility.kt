@@ -1,12 +1,12 @@
 package com.ort.wolfmansion.domain.model.village.ability
 
-import com.ort.wolfmansion.domain.model.ability.Ability
+import com.ort.wolfmansion.domain.model.ability.AbilityType
 
 data class VillageAbility(
     val day: Int,
     val myselfId: Int,
     val targetId: Int?,
     val targetFootstep: String?,
-    val ability: Ability
+    val abilityType: AbilityType
 ) {
 }

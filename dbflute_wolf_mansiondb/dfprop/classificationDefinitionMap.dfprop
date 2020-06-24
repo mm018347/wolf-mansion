@@ -86,22 +86,98 @@ map:{
         ; map:{
             ; topComment=役職; codeType=String
 	        	; groupingMap = map:{
+					; viewableWerewolfSay = map:{
+						; groupComment=囁きを見られる
+						; elementList= list:{人狼;呪狼;智狼;C国狂人}
+					}
 	        		; availableWerewolfSay = map:{
 	        			; groupComment=囁き可能
 	        			; elementList= list:{人狼;呪狼;智狼;C国狂人}
 	        		}
-	        		; hasDivineAbility = map:{
-	        			; groupComment=占い能力を持つ
-	        			; elementList= list:{占い師;賢者;占星術師}
+	        		; viewableMasonSay = map:{
+	        			; groupComment=共鳴発言を見られる
+	        			; elementList= list:{共鳴者}
 	        		}
+	        		; availableMasonSay = map:{
+	        			; groupComment=共鳴発言可能
+	        			; elementList= list:{共鳴者}
+	        		}
+	        		; hasDivineAbility = map:{
+	        			; groupComment=白黒占い能力を持つ
+	        			; elementList= list:{占い師}
+	        		}
+					; divineResultWolf = map:{
+						; groupComment=白黒占い結果が人狼になる
+						; elementList= list:{人狼;呪狼;智狼}
+					}
+	        		; hasWiseAbility = map:{
+	        			; groupComment=役職占い能力を持つ
+	        			; elementList= list:{賢者}
+	        		}
+	        		; hasAstroAbility = map:{
+	        			; groupComment=占星術能力を持つ
+	        			; elementList= list:{占星術師}
+	        		}
+					; deadByDivine= map:{
+						; groupComment=占いにより死亡する
+						; elementList= list:{妖狐}
+					}
+					; counterDeadByDivine= map:{
+						; groupComment=占いにより占った側が死亡する
+						; elementList= list:{呪狼}
+					}
+					; hasPsychicAbility = map:{
+						; groupComment=白黒霊能能力を持つ
+						; elementList= list:{霊能者}
+					}
+					; psychicResultWolf = map:{
+						; groupComment=白黒霊能結果が人狼になる
+						; elementList= list:{人狼;呪狼;智狼}
+					}
 	        		; hasSkillPsychicAbility = map:{
 	        			; groupComment=役職霊能能力を持つ
 	        			; elementList= list:{導師;魔神官}
 	        		}
+					; hasGuardAbility = map:{
+						; groupComment=護衛能力を持つ
+						; elementList= list:{狩人}
+					}
+					; hasAutopsyAbility = map:{
+						; groupComment=検死能力を持つ
+						; elementList= list:{検死官}
+					}
+					; hasInvestigateAbility = map:{
+						; groupComment=探偵能力を持つ
+						; elementList= list:{探偵}
+					}
+					; hasTrapAbility = map:{
+						; groupComment=罠能力を持つ
+						; elementList= list:{罠師}
+					}
+					; hasBombAbility = map:{
+						; groupComment=爆弾能力を持つ
+						; elementList= list:{爆弾魔}
+					}
+					; hasBakeryAbility = map:{
+						; groupComment=パン屋能力を持つ
+						; elementList= list:{パン屋}
+					}
 	        		; hasAttackAbility = map:{
 	        			; groupComment=襲撃能力を持つ
 	        			; elementList= list:{人狼;呪狼;智狼}
 	        		}
+	        		; hasAttackWiseAbility = map:{
+	        			; groupComment=襲撃に成功すると対象の役職を知ることができる
+	        			; elementList= list:{智狼}
+	        		}
+	        		; noDeadByAttack = map:{
+	        			; groupComment=襲撃されても死なない
+	        			; elementList= list:{妖狐;爆弾魔}
+	        		}
+					; notSelectableAttack = map:{
+						; groupComment=襲撃対象に選べない
+						; elementList= list:{人狼;呪狼;智狼}
+					}
 	        		; hasMadmanAbility = map:{
 	        			; groupComment=狂人能力を持つ
 	        			; elementList= list:{C国狂人;狂人;狂信者;魔神官}
@@ -110,19 +186,27 @@ map:{
 	        			; groupComment=徘徊能力を持つ
 	        			; elementList= list:{C国狂人;狂人;狂信者;魔神官;妖狐}
 	        		}
-	        		; noDeadByAttack = map:{
-	        			; groupComment=襲撃されても死なない
-	        			; elementList= list:{妖狐;爆弾魔}
-	        		}
+					; countWolf = map:{
+						; groupComment=勝敗判定時狼にカウントする
+						; elementList= list:{人狼;呪狼;智狼}
+					}
+					; noCount = map:{
+						; groupComment=勝敗判定時に人間としてカウントしない
+						; elementList= list:{妖狐}
+					}
+					; someoneSkill = map:{
+						; groupComment=おまかせ系
+						; elementList= list:{おまかせ;おまかせ村人陣営;おまかせ人狼陣営;おまかせ人外;おまかせ足音職;おまかせ役職窓あり}
+					}
 	        	}
         }
         ; map:{
             ; table=SKILL
             ; code=SKILL_CODE; name=SKILL_NAME
             ; subItemMap=map:{
-            	    ; order=DISP_ORDER
-            	    ; campCode=CAMP_CODE
-            	    ; skill_short_name=SKILL_SHORT_NAME
+            	; shortName=SKILL_SHORT_NAME
+            	; order=DISP_ORDER
+            	; campCode=CAMP_CODE
 			}
         }
     }
@@ -134,7 +218,19 @@ map:{
         }
     }
     ; DeadReason = list:{
-        ; map:{topComment=死亡理由; codeType=String}
+        ; map:{
+        	; topComment=死亡理由; codeType=String
+        	; groupingMap = map:{
+				; miserableDeath = map:{
+					; groupComment=無惨な死
+					; elementList= list:{襲撃;呪殺}
+				}
+				; psychicableDeath = map:{
+					; groupComment=霊能判定可能な死因
+					; elementList= list:{処刑;突然}
+				}
+			}
+        }
         ; map:{
             ; table=DEAD_REASON
             ; code=DEAD_REASON_CODE; name=DEAD_REASON_NAME

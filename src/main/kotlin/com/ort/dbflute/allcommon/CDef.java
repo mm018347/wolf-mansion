@@ -620,191 +620,191 @@ public interface CDef extends Classification {
         static {
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "星");
                 subItemMap.put("order", "4");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "星");
                 _subItemMapMap.put(占星術師.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "パ");
                 subItemMap.put("order", "12");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "パ");
                 _subItemMapMap.put(パン屋.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "爆");
                 subItemMap.put("order", "21");
                 subItemMap.put("campCode", "CRIMINAL");
-                subItemMap.put("skill_short_name", "爆");
                 _subItemMapMap.put(爆弾魔.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "C");
                 subItemMap.put("order", "17");
                 subItemMap.put("campCode", "WEREWOLF");
-                subItemMap.put("skill_short_name", "C");
                 _subItemMapMap.put(C国狂人.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "検");
                 subItemMap.put("order", "7");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "検");
                 _subItemMapMap.put(検死官.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "呪");
                 subItemMap.put("order", "14");
                 subItemMap.put("campCode", "WEREWOLF");
-                subItemMap.put("skill_short_name", "呪");
                 _subItemMapMap.put(呪狼.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "探");
                 subItemMap.put("order", "10");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "探");
                 _subItemMapMap.put(探偵.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "魔");
                 subItemMap.put("order", "18");
                 subItemMap.put("campCode", "WEREWOLF");
-                subItemMap.put("skill_short_name", "魔");
                 _subItemMapMap.put(魔神官.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "信");
                 subItemMap.put("order", "19");
                 subItemMap.put("campCode", "WEREWOLF");
-                subItemMap.put("skill_short_name", "信");
                 _subItemMapMap.put(狂信者.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "お");
                 subItemMap.put("order", "26");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "お");
                 _subItemMapMap.put(おまかせ足音職.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "狐");
                 subItemMap.put("order", "20");
                 subItemMap.put("campCode", "FOX");
-                subItemMap.put("skill_short_name", "狐");
                 _subItemMapMap.put(妖狐.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "お");
                 subItemMap.put("order", "27");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "お");
                 _subItemMapMap.put(おまかせ役職窓あり.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "導");
                 subItemMap.put("order", "6");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "導");
                 _subItemMapMap.put(導師.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "狩");
                 subItemMap.put("order", "8");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "狩");
                 _subItemMapMap.put(狩人.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "お");
                 subItemMap.put("order", "22");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "お");
                 _subItemMapMap.put(おまかせ.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "狂");
                 subItemMap.put("order", "16");
                 subItemMap.put("campCode", "WEREWOLF");
-                subItemMap.put("skill_short_name", "狂");
                 _subItemMapMap.put(狂人.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "共");
                 subItemMap.put("order", "9");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "共");
                 _subItemMapMap.put(共鳴者.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "霊");
                 subItemMap.put("order", "5");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "霊");
                 _subItemMapMap.put(霊能者.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "お");
                 subItemMap.put("order", "25");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "お");
                 _subItemMapMap.put(おまかせ人外.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "占");
                 subItemMap.put("order", "2");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "占");
                 _subItemMapMap.put(占い師.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "罠");
                 subItemMap.put("order", "11");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "罠");
                 _subItemMapMap.put(罠師.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "村");
                 subItemMap.put("order", "1");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "村");
                 _subItemMapMap.put(村人.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "お");
                 subItemMap.put("order", "23");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "お");
                 _subItemMapMap.put(おまかせ村人陣営.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "狼");
                 subItemMap.put("order", "13");
                 subItemMap.put("campCode", "WEREWOLF");
-                subItemMap.put("skill_short_name", "狼");
                 _subItemMapMap.put(人狼.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "お");
                 subItemMap.put("order", "24");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "お");
                 _subItemMapMap.put(おまかせ人狼陣営.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "賢");
                 subItemMap.put("order", "3");
                 subItemMap.put("campCode", "VILLAGER");
-                subItemMap.put("skill_short_name", "賢");
                 _subItemMapMap.put(賢者.code(), Collections.unmodifiableMap(subItemMap));
             }
             {
                 Map<String, Object> subItemMap = new HashMap<String, Object>();
+                subItemMap.put("shortName", "智");
                 subItemMap.put("order", "15");
                 subItemMap.put("campCode", "WEREWOLF");
-                subItemMap.put("skill_short_name", "智");
                 _subItemMapMap.put(智狼.code(), Collections.unmodifiableMap(subItemMap));
             }
         }
@@ -816,6 +816,10 @@ public interface CDef extends Classification {
         public Map<String, Object> subItemMap() { return _subItemMapMap.get(code()); }
         public ClassificationMeta meta() { return CDef.DefMeta.Skill; }
 
+        public String shortName() {
+            return (String)subItemMap().get("shortName");
+        }
+
         public String order() {
             return (String)subItemMap().get("order");
         }
@@ -824,8 +828,14 @@ public interface CDef extends Classification {
             return (String)subItemMap().get("campCode");
         }
 
-        public String skill_short_name() {
-            return (String)subItemMap().get("skill_short_name");
+        /**
+         * Is the classification in the group? <br>
+         * 囁きを見られる <br>
+         * The group elements:[人狼, 呪狼, 智狼, C国狂人]
+         * @return The determination, true or false.
+         */
+        public boolean isViewableWerewolfSay() {
+            return 人狼.equals(this) || 呪狼.equals(this) || 智狼.equals(this) || C国狂人.equals(this);
         }
 
         /**
@@ -840,12 +850,102 @@ public interface CDef extends Classification {
 
         /**
          * Is the classification in the group? <br>
-         * 占い能力を持つ <br>
-         * The group elements:[占い師, 賢者, 占星術師]
+         * 共鳴発言を見られる <br>
+         * The group elements:[共鳴者]
+         * @return The determination, true or false.
+         */
+        public boolean isViewableMasonSay() {
+            return 共鳴者.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 共鳴発言可能 <br>
+         * The group elements:[共鳴者]
+         * @return The determination, true or false.
+         */
+        public boolean isAvailableMasonSay() {
+            return 共鳴者.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 白黒占い能力を持つ <br>
+         * The group elements:[占い師]
          * @return The determination, true or false.
          */
         public boolean isHasDivineAbility() {
-            return 占い師.equals(this) || 賢者.equals(this) || 占星術師.equals(this);
+            return 占い師.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 白黒占い結果が人狼になる <br>
+         * The group elements:[人狼, 呪狼, 智狼]
+         * @return The determination, true or false.
+         */
+        public boolean isDivineResultWolf() {
+            return 人狼.equals(this) || 呪狼.equals(this) || 智狼.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 役職占い能力を持つ <br>
+         * The group elements:[賢者]
+         * @return The determination, true or false.
+         */
+        public boolean isHasWiseAbility() {
+            return 賢者.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 占星術能力を持つ <br>
+         * The group elements:[占星術師]
+         * @return The determination, true or false.
+         */
+        public boolean isHasAstroAbility() {
+            return 占星術師.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 占いにより死亡する <br>
+         * The group elements:[妖狐]
+         * @return The determination, true or false.
+         */
+        public boolean isDeadByDivine() {
+            return 妖狐.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 占いにより占った側が死亡する <br>
+         * The group elements:[呪狼]
+         * @return The determination, true or false.
+         */
+        public boolean isCounterDeadByDivine() {
+            return 呪狼.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 白黒霊能能力を持つ <br>
+         * The group elements:[霊能者]
+         * @return The determination, true or false.
+         */
+        public boolean isHasPsychicAbility() {
+            return 霊能者.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 白黒霊能結果が人狼になる <br>
+         * The group elements:[人狼, 呪狼, 智狼]
+         * @return The determination, true or false.
+         */
+        public boolean isPsychicResultWolf() {
+            return 人狼.equals(this) || 呪狼.equals(this) || 智狼.equals(this);
         }
 
         /**
@@ -860,11 +960,101 @@ public interface CDef extends Classification {
 
         /**
          * Is the classification in the group? <br>
+         * 護衛能力を持つ <br>
+         * The group elements:[狩人]
+         * @return The determination, true or false.
+         */
+        public boolean isHasGuardAbility() {
+            return 狩人.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 検死能力を持つ <br>
+         * The group elements:[検死官]
+         * @return The determination, true or false.
+         */
+        public boolean isHasAutopsyAbility() {
+            return 検死官.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 探偵能力を持つ <br>
+         * The group elements:[探偵]
+         * @return The determination, true or false.
+         */
+        public boolean isHasInvestigateAbility() {
+            return 探偵.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 罠能力を持つ <br>
+         * The group elements:[罠師]
+         * @return The determination, true or false.
+         */
+        public boolean isHasTrapAbility() {
+            return 罠師.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 爆弾能力を持つ <br>
+         * The group elements:[爆弾魔]
+         * @return The determination, true or false.
+         */
+        public boolean isHasBombAbility() {
+            return 爆弾魔.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * パン屋能力を持つ <br>
+         * The group elements:[パン屋]
+         * @return The determination, true or false.
+         */
+        public boolean isHasBakeryAbility() {
+            return パン屋.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
          * 襲撃能力を持つ <br>
          * The group elements:[人狼, 呪狼, 智狼]
          * @return The determination, true or false.
          */
         public boolean isHasAttackAbility() {
+            return 人狼.equals(this) || 呪狼.equals(this) || 智狼.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 襲撃に成功すると対象の役職を知ることができる <br>
+         * The group elements:[智狼]
+         * @return The determination, true or false.
+         */
+        public boolean isHasAttackWiseAbility() {
+            return 智狼.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 襲撃されても死なない <br>
+         * The group elements:[妖狐, 爆弾魔]
+         * @return The determination, true or false.
+         */
+        public boolean isNoDeadByAttack() {
+            return 妖狐.equals(this) || 爆弾魔.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 襲撃対象に選べない <br>
+         * The group elements:[人狼, 呪狼, 智狼]
+         * @return The determination, true or false.
+         */
+        public boolean isNotSelectableAttack() {
             return 人狼.equals(this) || 呪狼.equals(this) || 智狼.equals(this);
         }
 
@@ -890,22 +1080,63 @@ public interface CDef extends Classification {
 
         /**
          * Is the classification in the group? <br>
-         * 襲撃されても死なない <br>
-         * The group elements:[妖狐, 爆弾魔]
+         * 勝敗判定時狼にカウントする <br>
+         * The group elements:[人狼, 呪狼, 智狼]
          * @return The determination, true or false.
          */
-        public boolean isNoDeadByAttack() {
-            return 妖狐.equals(this) || 爆弾魔.equals(this);
+        public boolean isCountWolf() {
+            return 人狼.equals(this) || 呪狼.equals(this) || 智狼.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 勝敗判定時に人間としてカウントしない <br>
+         * The group elements:[妖狐]
+         * @return The determination, true or false.
+         */
+        public boolean isNoCount() {
+            return 妖狐.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * おまかせ系 <br>
+         * The group elements:[おまかせ, おまかせ村人陣営, おまかせ人狼陣営, おまかせ人外, おまかせ足音職, おまかせ役職窓あり]
+         * @return The determination, true or false.
+         */
+        public boolean isSomeoneSkill() {
+            return おまかせ.equals(this) || おまかせ村人陣営.equals(this) || おまかせ人狼陣営.equals(this) || おまかせ人外.equals(this) || おまかせ足音職.equals(this) || おまかせ役職窓あり.equals(this);
         }
 
         public boolean inGroup(String groupName) {
+            if ("viewableWerewolfSay".equals(groupName)) { return isViewableWerewolfSay(); }
             if ("availableWerewolfSay".equals(groupName)) { return isAvailableWerewolfSay(); }
+            if ("viewableMasonSay".equals(groupName)) { return isViewableMasonSay(); }
+            if ("availableMasonSay".equals(groupName)) { return isAvailableMasonSay(); }
             if ("hasDivineAbility".equals(groupName)) { return isHasDivineAbility(); }
+            if ("divineResultWolf".equals(groupName)) { return isDivineResultWolf(); }
+            if ("hasWiseAbility".equals(groupName)) { return isHasWiseAbility(); }
+            if ("hasAstroAbility".equals(groupName)) { return isHasAstroAbility(); }
+            if ("deadByDivine".equals(groupName)) { return isDeadByDivine(); }
+            if ("counterDeadByDivine".equals(groupName)) { return isCounterDeadByDivine(); }
+            if ("hasPsychicAbility".equals(groupName)) { return isHasPsychicAbility(); }
+            if ("psychicResultWolf".equals(groupName)) { return isPsychicResultWolf(); }
             if ("hasSkillPsychicAbility".equals(groupName)) { return isHasSkillPsychicAbility(); }
+            if ("hasGuardAbility".equals(groupName)) { return isHasGuardAbility(); }
+            if ("hasAutopsyAbility".equals(groupName)) { return isHasAutopsyAbility(); }
+            if ("hasInvestigateAbility".equals(groupName)) { return isHasInvestigateAbility(); }
+            if ("hasTrapAbility".equals(groupName)) { return isHasTrapAbility(); }
+            if ("hasBombAbility".equals(groupName)) { return isHasBombAbility(); }
+            if ("hasBakeryAbility".equals(groupName)) { return isHasBakeryAbility(); }
             if ("hasAttackAbility".equals(groupName)) { return isHasAttackAbility(); }
+            if ("hasAttackWiseAbility".equals(groupName)) { return isHasAttackWiseAbility(); }
+            if ("noDeadByAttack".equals(groupName)) { return isNoDeadByAttack(); }
+            if ("notSelectableAttack".equals(groupName)) { return isNotSelectableAttack(); }
             if ("hasMadmanAbility".equals(groupName)) { return isHasMadmanAbility(); }
             if ("hasDisturbAbility".equals(groupName)) { return isHasDisturbAbility(); }
-            if ("noDeadByAttack".equals(groupName)) { return isNoDeadByAttack(); }
+            if ("countWolf".equals(groupName)) { return isCountWolf(); }
+            if ("noCount".equals(groupName)) { return isNoCount(); }
+            if ("someoneSkill".equals(groupName)) { return isSomeoneSkill(); }
             return false;
         }
 
@@ -973,13 +1204,34 @@ public interface CDef extends Classification {
          */
         public static List<Skill> listByGroup(String groupName) {
             if (groupName == null) { throw new IllegalArgumentException("The argument 'groupName' should not be null."); }
+            if ("viewableWerewolfSay".equalsIgnoreCase(groupName)) { return listOfViewableWerewolfSay(); }
             if ("availableWerewolfSay".equalsIgnoreCase(groupName)) { return listOfAvailableWerewolfSay(); }
+            if ("viewableMasonSay".equalsIgnoreCase(groupName)) { return listOfViewableMasonSay(); }
+            if ("availableMasonSay".equalsIgnoreCase(groupName)) { return listOfAvailableMasonSay(); }
             if ("hasDivineAbility".equalsIgnoreCase(groupName)) { return listOfHasDivineAbility(); }
+            if ("divineResultWolf".equalsIgnoreCase(groupName)) { return listOfDivineResultWolf(); }
+            if ("hasWiseAbility".equalsIgnoreCase(groupName)) { return listOfHasWiseAbility(); }
+            if ("hasAstroAbility".equalsIgnoreCase(groupName)) { return listOfHasAstroAbility(); }
+            if ("deadByDivine".equalsIgnoreCase(groupName)) { return listOfDeadByDivine(); }
+            if ("counterDeadByDivine".equalsIgnoreCase(groupName)) { return listOfCounterDeadByDivine(); }
+            if ("hasPsychicAbility".equalsIgnoreCase(groupName)) { return listOfHasPsychicAbility(); }
+            if ("psychicResultWolf".equalsIgnoreCase(groupName)) { return listOfPsychicResultWolf(); }
             if ("hasSkillPsychicAbility".equalsIgnoreCase(groupName)) { return listOfHasSkillPsychicAbility(); }
+            if ("hasGuardAbility".equalsIgnoreCase(groupName)) { return listOfHasGuardAbility(); }
+            if ("hasAutopsyAbility".equalsIgnoreCase(groupName)) { return listOfHasAutopsyAbility(); }
+            if ("hasInvestigateAbility".equalsIgnoreCase(groupName)) { return listOfHasInvestigateAbility(); }
+            if ("hasTrapAbility".equalsIgnoreCase(groupName)) { return listOfHasTrapAbility(); }
+            if ("hasBombAbility".equalsIgnoreCase(groupName)) { return listOfHasBombAbility(); }
+            if ("hasBakeryAbility".equalsIgnoreCase(groupName)) { return listOfHasBakeryAbility(); }
             if ("hasAttackAbility".equalsIgnoreCase(groupName)) { return listOfHasAttackAbility(); }
+            if ("hasAttackWiseAbility".equalsIgnoreCase(groupName)) { return listOfHasAttackWiseAbility(); }
+            if ("noDeadByAttack".equalsIgnoreCase(groupName)) { return listOfNoDeadByAttack(); }
+            if ("notSelectableAttack".equalsIgnoreCase(groupName)) { return listOfNotSelectableAttack(); }
             if ("hasMadmanAbility".equalsIgnoreCase(groupName)) { return listOfHasMadmanAbility(); }
             if ("hasDisturbAbility".equalsIgnoreCase(groupName)) { return listOfHasDisturbAbility(); }
-            if ("noDeadByAttack".equalsIgnoreCase(groupName)) { return listOfNoDeadByAttack(); }
+            if ("countWolf".equalsIgnoreCase(groupName)) { return listOfCountWolf(); }
+            if ("noCount".equalsIgnoreCase(groupName)) { return listOfNoCount(); }
+            if ("someoneSkill".equalsIgnoreCase(groupName)) { return listOfSomeoneSkill(); }
             throw new ClassificationNotFoundException("Unknown classification group: Skill." + groupName);
         }
 
@@ -997,6 +1249,16 @@ public interface CDef extends Classification {
 
         /**
          * Get the list of group classification elements. (returns new copied list) <br>
+         * 囁きを見られる <br>
+         * The group elements:[人狼, 呪狼, 智狼, C国狂人]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfViewableWerewolfSay() {
+            return new ArrayList<Skill>(Arrays.asList(人狼, 呪狼, 智狼, C国狂人));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
          * 囁き可能 <br>
          * The group elements:[人狼, 呪狼, 智狼, C国狂人]
          * @return The snapshot list of classification elements in the group. (NotNull)
@@ -1007,12 +1269,102 @@ public interface CDef extends Classification {
 
         /**
          * Get the list of group classification elements. (returns new copied list) <br>
-         * 占い能力を持つ <br>
-         * The group elements:[占い師, 賢者, 占星術師]
+         * 共鳴発言を見られる <br>
+         * The group elements:[共鳴者]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfViewableMasonSay() {
+            return new ArrayList<Skill>(Arrays.asList(共鳴者));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 共鳴発言可能 <br>
+         * The group elements:[共鳴者]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfAvailableMasonSay() {
+            return new ArrayList<Skill>(Arrays.asList(共鳴者));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 白黒占い能力を持つ <br>
+         * The group elements:[占い師]
          * @return The snapshot list of classification elements in the group. (NotNull)
          */
         public static List<Skill> listOfHasDivineAbility() {
-            return new ArrayList<Skill>(Arrays.asList(占い師, 賢者, 占星術師));
+            return new ArrayList<Skill>(Arrays.asList(占い師));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 白黒占い結果が人狼になる <br>
+         * The group elements:[人狼, 呪狼, 智狼]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfDivineResultWolf() {
+            return new ArrayList<Skill>(Arrays.asList(人狼, 呪狼, 智狼));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 役職占い能力を持つ <br>
+         * The group elements:[賢者]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfHasWiseAbility() {
+            return new ArrayList<Skill>(Arrays.asList(賢者));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 占星術能力を持つ <br>
+         * The group elements:[占星術師]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfHasAstroAbility() {
+            return new ArrayList<Skill>(Arrays.asList(占星術師));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 占いにより死亡する <br>
+         * The group elements:[妖狐]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfDeadByDivine() {
+            return new ArrayList<Skill>(Arrays.asList(妖狐));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 占いにより占った側が死亡する <br>
+         * The group elements:[呪狼]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfCounterDeadByDivine() {
+            return new ArrayList<Skill>(Arrays.asList(呪狼));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 白黒霊能能力を持つ <br>
+         * The group elements:[霊能者]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfHasPsychicAbility() {
+            return new ArrayList<Skill>(Arrays.asList(霊能者));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 白黒霊能結果が人狼になる <br>
+         * The group elements:[人狼, 呪狼, 智狼]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfPsychicResultWolf() {
+            return new ArrayList<Skill>(Arrays.asList(人狼, 呪狼, 智狼));
         }
 
         /**
@@ -1027,11 +1379,101 @@ public interface CDef extends Classification {
 
         /**
          * Get the list of group classification elements. (returns new copied list) <br>
+         * 護衛能力を持つ <br>
+         * The group elements:[狩人]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfHasGuardAbility() {
+            return new ArrayList<Skill>(Arrays.asList(狩人));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 検死能力を持つ <br>
+         * The group elements:[検死官]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfHasAutopsyAbility() {
+            return new ArrayList<Skill>(Arrays.asList(検死官));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 探偵能力を持つ <br>
+         * The group elements:[探偵]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfHasInvestigateAbility() {
+            return new ArrayList<Skill>(Arrays.asList(探偵));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 罠能力を持つ <br>
+         * The group elements:[罠師]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfHasTrapAbility() {
+            return new ArrayList<Skill>(Arrays.asList(罠師));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 爆弾能力を持つ <br>
+         * The group elements:[爆弾魔]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfHasBombAbility() {
+            return new ArrayList<Skill>(Arrays.asList(爆弾魔));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * パン屋能力を持つ <br>
+         * The group elements:[パン屋]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfHasBakeryAbility() {
+            return new ArrayList<Skill>(Arrays.asList(パン屋));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
          * 襲撃能力を持つ <br>
          * The group elements:[人狼, 呪狼, 智狼]
          * @return The snapshot list of classification elements in the group. (NotNull)
          */
         public static List<Skill> listOfHasAttackAbility() {
+            return new ArrayList<Skill>(Arrays.asList(人狼, 呪狼, 智狼));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 襲撃に成功すると対象の役職を知ることができる <br>
+         * The group elements:[智狼]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfHasAttackWiseAbility() {
+            return new ArrayList<Skill>(Arrays.asList(智狼));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 襲撃されても死なない <br>
+         * The group elements:[妖狐, 爆弾魔]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfNoDeadByAttack() {
+            return new ArrayList<Skill>(Arrays.asList(妖狐, 爆弾魔));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 襲撃対象に選べない <br>
+         * The group elements:[人狼, 呪狼, 智狼]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfNotSelectableAttack() {
             return new ArrayList<Skill>(Arrays.asList(人狼, 呪狼, 智狼));
         }
 
@@ -1057,12 +1499,32 @@ public interface CDef extends Classification {
 
         /**
          * Get the list of group classification elements. (returns new copied list) <br>
-         * 襲撃されても死なない <br>
-         * The group elements:[妖狐, 爆弾魔]
+         * 勝敗判定時狼にカウントする <br>
+         * The group elements:[人狼, 呪狼, 智狼]
          * @return The snapshot list of classification elements in the group. (NotNull)
          */
-        public static List<Skill> listOfNoDeadByAttack() {
-            return new ArrayList<Skill>(Arrays.asList(妖狐, 爆弾魔));
+        public static List<Skill> listOfCountWolf() {
+            return new ArrayList<Skill>(Arrays.asList(人狼, 呪狼, 智狼));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 勝敗判定時に人間としてカウントしない <br>
+         * The group elements:[妖狐]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfNoCount() {
+            return new ArrayList<Skill>(Arrays.asList(妖狐));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * おまかせ系 <br>
+         * The group elements:[おまかせ, おまかせ村人陣営, おまかせ人狼陣営, おまかせ人外, おまかせ足音職, おまかせ役職窓あり]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<Skill> listOfSomeoneSkill() {
+            return new ArrayList<Skill>(Arrays.asList(おまかせ, おまかせ村人陣営, おまかせ人狼陣営, おまかせ人外, おまかせ足音職, おまかせ役職窓あり));
         }
 
         /**
@@ -1071,13 +1533,34 @@ public interface CDef extends Classification {
          * @return The snapshot list of classification elements in the group. (NotNull, EmptyAllowed: if the group is not found)
          */
         public static List<Skill> groupOf(String groupName) {
+            if ("viewableWerewolfSay".equals(groupName)) { return listOfViewableWerewolfSay(); }
             if ("availableWerewolfSay".equals(groupName)) { return listOfAvailableWerewolfSay(); }
+            if ("viewableMasonSay".equals(groupName)) { return listOfViewableMasonSay(); }
+            if ("availableMasonSay".equals(groupName)) { return listOfAvailableMasonSay(); }
             if ("hasDivineAbility".equals(groupName)) { return listOfHasDivineAbility(); }
+            if ("divineResultWolf".equals(groupName)) { return listOfDivineResultWolf(); }
+            if ("hasWiseAbility".equals(groupName)) { return listOfHasWiseAbility(); }
+            if ("hasAstroAbility".equals(groupName)) { return listOfHasAstroAbility(); }
+            if ("deadByDivine".equals(groupName)) { return listOfDeadByDivine(); }
+            if ("counterDeadByDivine".equals(groupName)) { return listOfCounterDeadByDivine(); }
+            if ("hasPsychicAbility".equals(groupName)) { return listOfHasPsychicAbility(); }
+            if ("psychicResultWolf".equals(groupName)) { return listOfPsychicResultWolf(); }
             if ("hasSkillPsychicAbility".equals(groupName)) { return listOfHasSkillPsychicAbility(); }
+            if ("hasGuardAbility".equals(groupName)) { return listOfHasGuardAbility(); }
+            if ("hasAutopsyAbility".equals(groupName)) { return listOfHasAutopsyAbility(); }
+            if ("hasInvestigateAbility".equals(groupName)) { return listOfHasInvestigateAbility(); }
+            if ("hasTrapAbility".equals(groupName)) { return listOfHasTrapAbility(); }
+            if ("hasBombAbility".equals(groupName)) { return listOfHasBombAbility(); }
+            if ("hasBakeryAbility".equals(groupName)) { return listOfHasBakeryAbility(); }
             if ("hasAttackAbility".equals(groupName)) { return listOfHasAttackAbility(); }
+            if ("hasAttackWiseAbility".equals(groupName)) { return listOfHasAttackWiseAbility(); }
+            if ("noDeadByAttack".equals(groupName)) { return listOfNoDeadByAttack(); }
+            if ("notSelectableAttack".equals(groupName)) { return listOfNotSelectableAttack(); }
             if ("hasMadmanAbility".equals(groupName)) { return listOfHasMadmanAbility(); }
             if ("hasDisturbAbility".equals(groupName)) { return listOfHasDisturbAbility(); }
-            if ("noDeadByAttack".equals(groupName)) { return listOfNoDeadByAttack(); }
+            if ("countWolf".equals(groupName)) { return listOfCountWolf(); }
+            if ("noCount".equals(groupName)) { return listOfNoCount(); }
+            if ("someoneSkill".equals(groupName)) { return listOfSomeoneSkill(); }
             return new ArrayList<Skill>(4);
         }
 
@@ -1290,7 +1773,29 @@ public interface CDef extends Classification {
         public Map<String, Object> subItemMap() { return Collections.emptyMap(); }
         public ClassificationMeta meta() { return CDef.DefMeta.DeadReason; }
 
+        /**
+         * Is the classification in the group? <br>
+         * 無惨な死 <br>
+         * The group elements:[襲撃, 呪殺]
+         * @return The determination, true or false.
+         */
+        public boolean isMiserableDeath() {
+            return 襲撃.equals(this) || 呪殺.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 霊能判定可能な死因 <br>
+         * The group elements:[処刑, 突然]
+         * @return The determination, true or false.
+         */
+        public boolean isPsychicableDeath() {
+            return 処刑.equals(this) || 突然.equals(this);
+        }
+
         public boolean inGroup(String groupName) {
+            if ("miserableDeath".equals(groupName)) { return isMiserableDeath(); }
+            if ("psychicableDeath".equals(groupName)) { return isPsychicableDeath(); }
             return false;
         }
 
@@ -1358,6 +1863,8 @@ public interface CDef extends Classification {
          */
         public static List<DeadReason> listByGroup(String groupName) {
             if (groupName == null) { throw new IllegalArgumentException("The argument 'groupName' should not be null."); }
+            if ("miserableDeath".equalsIgnoreCase(groupName)) { return listOfMiserableDeath(); }
+            if ("psychicableDeath".equalsIgnoreCase(groupName)) { return listOfPsychicableDeath(); }
             throw new ClassificationNotFoundException("Unknown classification group: DeadReason." + groupName);
         }
 
@@ -1374,11 +1881,33 @@ public interface CDef extends Classification {
         }
 
         /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 無惨な死 <br>
+         * The group elements:[襲撃, 呪殺]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<DeadReason> listOfMiserableDeath() {
+            return new ArrayList<DeadReason>(Arrays.asList(襲撃, 呪殺));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 霊能判定可能な死因 <br>
+         * The group elements:[処刑, 突然]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<DeadReason> listOfPsychicableDeath() {
+            return new ArrayList<DeadReason>(Arrays.asList(処刑, 突然));
+        }
+
+        /**
          * Get the list of classification elements in the specified group. (returns new copied list) <br>
          * @param groupName The string of group name, which is case-sensitive. (NullAllowed: if null, returns empty list)
          * @return The snapshot list of classification elements in the group. (NotNull, EmptyAllowed: if the group is not found)
          */
         public static List<DeadReason> groupOf(String groupName) {
+            if ("miserableDeath".equals(groupName)) { return listOfMiserableDeath(); }
+            if ("psychicableDeath".equals(groupName)) { return listOfPsychicableDeath(); }
             return new ArrayList<DeadReason>(4);
         }
 

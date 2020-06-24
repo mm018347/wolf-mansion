@@ -37,7 +37,7 @@
   
   Granted, this removes some of the expressive power that is inherent by being 
   able to construct a shell command such as `find . -name foo -exec rm {}` but 
-  it gives you the ability to be cross platform. To work anywhere and 
+  it gives you the abilityType to be cross platform. To work anywhere and
   everywhere. And hey, if you really need to execute a shell command, Ant has 
   an exec rule that allows different commands to be executed based on the OS 
   that it is executing on.

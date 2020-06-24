@@ -1418,6 +1418,16 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
+     * 囁きを見られる <br>
+     * The group elements:[人狼, 呪狼, 智狼, C国狂人]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_ViewableWerewolfSay() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isViewableWerewolfSay();
+    }
+
+    /**
      * 囁き可能 <br>
      * The group elements:[人狼, 呪狼, 智狼, C国狂人]
      * @return The determination, true or false.
@@ -1428,13 +1438,103 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
-     * 占い能力を持つ <br>
-     * The group elements:[占い師, 賢者, 占星術師]
+     * 共鳴発言を見られる <br>
+     * The group elements:[共鳴者]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_ViewableMasonSay() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isViewableMasonSay();
+    }
+
+    /**
+     * 共鳴発言可能 <br>
+     * The group elements:[共鳴者]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_AvailableMasonSay() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isAvailableMasonSay();
+    }
+
+    /**
+     * 白黒占い能力を持つ <br>
+     * The group elements:[占い師]
      * @return The determination, true or false.
      */
     public boolean isSkillCode_HasDivineAbility() {
         CDef.Skill cdef = getSkillCodeAsSkill();
         return cdef != null && cdef.isHasDivineAbility();
+    }
+
+    /**
+     * 白黒占い結果が人狼になる <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_DivineResultWolf() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isDivineResultWolf();
+    }
+
+    /**
+     * 役職占い能力を持つ <br>
+     * The group elements:[賢者]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_HasWiseAbility() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isHasWiseAbility();
+    }
+
+    /**
+     * 占星術能力を持つ <br>
+     * The group elements:[占星術師]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_HasAstroAbility() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isHasAstroAbility();
+    }
+
+    /**
+     * 占いにより死亡する <br>
+     * The group elements:[妖狐]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_DeadByDivine() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isDeadByDivine();
+    }
+
+    /**
+     * 占いにより占った側が死亡する <br>
+     * The group elements:[呪狼]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_CounterDeadByDivine() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isCounterDeadByDivine();
+    }
+
+    /**
+     * 白黒霊能能力を持つ <br>
+     * The group elements:[霊能者]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_HasPsychicAbility() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isHasPsychicAbility();
+    }
+
+    /**
+     * 白黒霊能結果が人狼になる <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_PsychicResultWolf() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isPsychicResultWolf();
     }
 
     /**
@@ -1448,6 +1548,66 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
+     * 護衛能力を持つ <br>
+     * The group elements:[狩人]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_HasGuardAbility() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isHasGuardAbility();
+    }
+
+    /**
+     * 検死能力を持つ <br>
+     * The group elements:[検死官]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_HasAutopsyAbility() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isHasAutopsyAbility();
+    }
+
+    /**
+     * 探偵能力を持つ <br>
+     * The group elements:[探偵]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_HasInvestigateAbility() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isHasInvestigateAbility();
+    }
+
+    /**
+     * 罠能力を持つ <br>
+     * The group elements:[罠師]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_HasTrapAbility() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isHasTrapAbility();
+    }
+
+    /**
+     * 爆弾能力を持つ <br>
+     * The group elements:[爆弾魔]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_HasBombAbility() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isHasBombAbility();
+    }
+
+    /**
+     * パン屋能力を持つ <br>
+     * The group elements:[パン屋]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_HasBakeryAbility() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isHasBakeryAbility();
+    }
+
+    /**
      * 襲撃能力を持つ <br>
      * The group elements:[人狼, 呪狼, 智狼]
      * @return The determination, true or false.
@@ -1455,6 +1615,36 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     public boolean isSkillCode_HasAttackAbility() {
         CDef.Skill cdef = getSkillCodeAsSkill();
         return cdef != null && cdef.isHasAttackAbility();
+    }
+
+    /**
+     * 襲撃に成功すると対象の役職を知ることができる <br>
+     * The group elements:[智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_HasAttackWiseAbility() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isHasAttackWiseAbility();
+    }
+
+    /**
+     * 襲撃されても死なない <br>
+     * The group elements:[妖狐, 爆弾魔]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_NoDeadByAttack() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isNoDeadByAttack();
+    }
+
+    /**
+     * 襲撃対象に選べない <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_NotSelectableAttack() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isNotSelectableAttack();
     }
 
     /**
@@ -1478,13 +1668,33 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
-     * 襲撃されても死なない <br>
-     * The group elements:[妖狐, 爆弾魔]
+     * 勝敗判定時狼にカウントする <br>
+     * The group elements:[人狼, 呪狼, 智狼]
      * @return The determination, true or false.
      */
-    public boolean isSkillCode_NoDeadByAttack() {
+    public boolean isSkillCode_CountWolf() {
         CDef.Skill cdef = getSkillCodeAsSkill();
-        return cdef != null && cdef.isNoDeadByAttack();
+        return cdef != null && cdef.isCountWolf();
+    }
+
+    /**
+     * 勝敗判定時に人間としてカウントしない <br>
+     * The group elements:[妖狐]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_NoCount() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isNoCount();
+    }
+
+    /**
+     * おまかせ系 <br>
+     * The group elements:[おまかせ, おまかせ村人陣営, おまかせ人狼陣営, おまかせ人外, おまかせ足音職, おまかせ役職窓あり]
+     * @return The determination, true or false.
+     */
+    public boolean isSkillCode_SomeoneSkill() {
+        CDef.Skill cdef = getSkillCodeAsSkill();
+        return cdef != null && cdef.isSomeoneSkill();
     }
 
     /**
@@ -1785,6 +1995,16 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
+     * 囁きを見られる <br>
+     * The group elements:[人狼, 呪狼, 智狼, C国狂人]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_ViewableWerewolfSay() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isViewableWerewolfSay();
+    }
+
+    /**
      * 囁き可能 <br>
      * The group elements:[人狼, 呪狼, 智狼, C国狂人]
      * @return The determination, true or false.
@@ -1795,13 +2015,103 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
-     * 占い能力を持つ <br>
-     * The group elements:[占い師, 賢者, 占星術師]
+     * 共鳴発言を見られる <br>
+     * The group elements:[共鳴者]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_ViewableMasonSay() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isViewableMasonSay();
+    }
+
+    /**
+     * 共鳴発言可能 <br>
+     * The group elements:[共鳴者]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_AvailableMasonSay() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isAvailableMasonSay();
+    }
+
+    /**
+     * 白黒占い能力を持つ <br>
+     * The group elements:[占い師]
      * @return The determination, true or false.
      */
     public boolean isRequestSkillCode_HasDivineAbility() {
         CDef.Skill cdef = getRequestSkillCodeAsSkill();
         return cdef != null && cdef.isHasDivineAbility();
+    }
+
+    /**
+     * 白黒占い結果が人狼になる <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_DivineResultWolf() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isDivineResultWolf();
+    }
+
+    /**
+     * 役職占い能力を持つ <br>
+     * The group elements:[賢者]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_HasWiseAbility() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasWiseAbility();
+    }
+
+    /**
+     * 占星術能力を持つ <br>
+     * The group elements:[占星術師]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_HasAstroAbility() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasAstroAbility();
+    }
+
+    /**
+     * 占いにより死亡する <br>
+     * The group elements:[妖狐]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_DeadByDivine() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isDeadByDivine();
+    }
+
+    /**
+     * 占いにより占った側が死亡する <br>
+     * The group elements:[呪狼]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_CounterDeadByDivine() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isCounterDeadByDivine();
+    }
+
+    /**
+     * 白黒霊能能力を持つ <br>
+     * The group elements:[霊能者]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_HasPsychicAbility() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasPsychicAbility();
+    }
+
+    /**
+     * 白黒霊能結果が人狼になる <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_PsychicResultWolf() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isPsychicResultWolf();
     }
 
     /**
@@ -1815,6 +2125,66 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
+     * 護衛能力を持つ <br>
+     * The group elements:[狩人]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_HasGuardAbility() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasGuardAbility();
+    }
+
+    /**
+     * 検死能力を持つ <br>
+     * The group elements:[検死官]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_HasAutopsyAbility() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasAutopsyAbility();
+    }
+
+    /**
+     * 探偵能力を持つ <br>
+     * The group elements:[探偵]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_HasInvestigateAbility() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasInvestigateAbility();
+    }
+
+    /**
+     * 罠能力を持つ <br>
+     * The group elements:[罠師]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_HasTrapAbility() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasTrapAbility();
+    }
+
+    /**
+     * 爆弾能力を持つ <br>
+     * The group elements:[爆弾魔]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_HasBombAbility() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasBombAbility();
+    }
+
+    /**
+     * パン屋能力を持つ <br>
+     * The group elements:[パン屋]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_HasBakeryAbility() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasBakeryAbility();
+    }
+
+    /**
      * 襲撃能力を持つ <br>
      * The group elements:[人狼, 呪狼, 智狼]
      * @return The determination, true or false.
@@ -1822,6 +2192,36 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     public boolean isRequestSkillCode_HasAttackAbility() {
         CDef.Skill cdef = getRequestSkillCodeAsSkill();
         return cdef != null && cdef.isHasAttackAbility();
+    }
+
+    /**
+     * 襲撃に成功すると対象の役職を知ることができる <br>
+     * The group elements:[智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_HasAttackWiseAbility() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasAttackWiseAbility();
+    }
+
+    /**
+     * 襲撃されても死なない <br>
+     * The group elements:[妖狐, 爆弾魔]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_NoDeadByAttack() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isNoDeadByAttack();
+    }
+
+    /**
+     * 襲撃対象に選べない <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_NotSelectableAttack() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isNotSelectableAttack();
     }
 
     /**
@@ -1845,13 +2245,33 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
-     * 襲撃されても死なない <br>
-     * The group elements:[妖狐, 爆弾魔]
+     * 勝敗判定時狼にカウントする <br>
+     * The group elements:[人狼, 呪狼, 智狼]
      * @return The determination, true or false.
      */
-    public boolean isRequestSkillCode_NoDeadByAttack() {
+    public boolean isRequestSkillCode_CountWolf() {
         CDef.Skill cdef = getRequestSkillCodeAsSkill();
-        return cdef != null && cdef.isNoDeadByAttack();
+        return cdef != null && cdef.isCountWolf();
+    }
+
+    /**
+     * 勝敗判定時に人間としてカウントしない <br>
+     * The group elements:[妖狐]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_NoCount() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isNoCount();
+    }
+
+    /**
+     * おまかせ系 <br>
+     * The group elements:[おまかせ, おまかせ村人陣営, おまかせ人狼陣営, おまかせ人外, おまかせ足音職, おまかせ役職窓あり]
+     * @return The determination, true or false.
+     */
+    public boolean isRequestSkillCode_SomeoneSkill() {
+        CDef.Skill cdef = getRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isSomeoneSkill();
     }
 
     /**
@@ -2152,6 +2572,16 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
+     * 囁きを見られる <br>
+     * The group elements:[人狼, 呪狼, 智狼, C国狂人]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_ViewableWerewolfSay() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isViewableWerewolfSay();
+    }
+
+    /**
      * 囁き可能 <br>
      * The group elements:[人狼, 呪狼, 智狼, C国狂人]
      * @return The determination, true or false.
@@ -2162,13 +2592,103 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
-     * 占い能力を持つ <br>
-     * The group elements:[占い師, 賢者, 占星術師]
+     * 共鳴発言を見られる <br>
+     * The group elements:[共鳴者]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_ViewableMasonSay() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isViewableMasonSay();
+    }
+
+    /**
+     * 共鳴発言可能 <br>
+     * The group elements:[共鳴者]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_AvailableMasonSay() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isAvailableMasonSay();
+    }
+
+    /**
+     * 白黒占い能力を持つ <br>
+     * The group elements:[占い師]
      * @return The determination, true or false.
      */
     public boolean isSecondRequestSkillCode_HasDivineAbility() {
         CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
         return cdef != null && cdef.isHasDivineAbility();
+    }
+
+    /**
+     * 白黒占い結果が人狼になる <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_DivineResultWolf() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isDivineResultWolf();
+    }
+
+    /**
+     * 役職占い能力を持つ <br>
+     * The group elements:[賢者]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_HasWiseAbility() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasWiseAbility();
+    }
+
+    /**
+     * 占星術能力を持つ <br>
+     * The group elements:[占星術師]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_HasAstroAbility() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasAstroAbility();
+    }
+
+    /**
+     * 占いにより死亡する <br>
+     * The group elements:[妖狐]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_DeadByDivine() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isDeadByDivine();
+    }
+
+    /**
+     * 占いにより占った側が死亡する <br>
+     * The group elements:[呪狼]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_CounterDeadByDivine() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isCounterDeadByDivine();
+    }
+
+    /**
+     * 白黒霊能能力を持つ <br>
+     * The group elements:[霊能者]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_HasPsychicAbility() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasPsychicAbility();
+    }
+
+    /**
+     * 白黒霊能結果が人狼になる <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_PsychicResultWolf() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isPsychicResultWolf();
     }
 
     /**
@@ -2182,6 +2702,66 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
+     * 護衛能力を持つ <br>
+     * The group elements:[狩人]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_HasGuardAbility() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasGuardAbility();
+    }
+
+    /**
+     * 検死能力を持つ <br>
+     * The group elements:[検死官]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_HasAutopsyAbility() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasAutopsyAbility();
+    }
+
+    /**
+     * 探偵能力を持つ <br>
+     * The group elements:[探偵]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_HasInvestigateAbility() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasInvestigateAbility();
+    }
+
+    /**
+     * 罠能力を持つ <br>
+     * The group elements:[罠師]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_HasTrapAbility() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasTrapAbility();
+    }
+
+    /**
+     * 爆弾能力を持つ <br>
+     * The group elements:[爆弾魔]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_HasBombAbility() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasBombAbility();
+    }
+
+    /**
+     * パン屋能力を持つ <br>
+     * The group elements:[パン屋]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_HasBakeryAbility() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasBakeryAbility();
+    }
+
+    /**
      * 襲撃能力を持つ <br>
      * The group elements:[人狼, 呪狼, 智狼]
      * @return The determination, true or false.
@@ -2189,6 +2769,36 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     public boolean isSecondRequestSkillCode_HasAttackAbility() {
         CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
         return cdef != null && cdef.isHasAttackAbility();
+    }
+
+    /**
+     * 襲撃に成功すると対象の役職を知ることができる <br>
+     * The group elements:[智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_HasAttackWiseAbility() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isHasAttackWiseAbility();
+    }
+
+    /**
+     * 襲撃されても死なない <br>
+     * The group elements:[妖狐, 爆弾魔]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_NoDeadByAttack() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isNoDeadByAttack();
+    }
+
+    /**
+     * 襲撃対象に選べない <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_NotSelectableAttack() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isNotSelectableAttack();
     }
 
     /**
@@ -2212,13 +2822,33 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     }
 
     /**
-     * 襲撃されても死なない <br>
-     * The group elements:[妖狐, 爆弾魔]
+     * 勝敗判定時狼にカウントする <br>
+     * The group elements:[人狼, 呪狼, 智狼]
      * @return The determination, true or false.
      */
-    public boolean isSecondRequestSkillCode_NoDeadByAttack() {
+    public boolean isSecondRequestSkillCode_CountWolf() {
         CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
-        return cdef != null && cdef.isNoDeadByAttack();
+        return cdef != null && cdef.isCountWolf();
+    }
+
+    /**
+     * 勝敗判定時に人間としてカウントしない <br>
+     * The group elements:[妖狐]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_NoCount() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isNoCount();
+    }
+
+    /**
+     * おまかせ系 <br>
+     * The group elements:[おまかせ, おまかせ村人陣営, おまかせ人狼陣営, おまかせ人外, おまかせ足音職, おまかせ役職窓あり]
+     * @return The determination, true or false.
+     */
+    public boolean isSecondRequestSkillCode_SomeoneSkill() {
+        CDef.Skill cdef = getSecondRequestSkillCodeAsSkill();
+        return cdef != null && cdef.isSomeoneSkill();
     }
 
     /**
@@ -2329,6 +2959,26 @@ public abstract class BsVillagePlayer extends AbstractEntity implements DomainEn
     public boolean isDeadReasonCode罠死() {
         CDef.DeadReason cdef = getDeadReasonCodeAsDeadReason();
         return cdef != null ? cdef.equals(CDef.DeadReason.罠死) : false;
+    }
+
+    /**
+     * 無惨な死 <br>
+     * The group elements:[襲撃, 呪殺]
+     * @return The determination, true or false.
+     */
+    public boolean isDeadReasonCode_MiserableDeath() {
+        CDef.DeadReason cdef = getDeadReasonCodeAsDeadReason();
+        return cdef != null && cdef.isMiserableDeath();
+    }
+
+    /**
+     * 霊能判定可能な死因 <br>
+     * The group elements:[処刑, 突然]
+     * @return The determination, true or false.
+     */
+    public boolean isDeadReasonCode_PsychicableDeath() {
+        CDef.DeadReason cdef = getDeadReasonCodeAsDeadReason();
+        return cdef != null && cdef.isPsychicableDeath();
     }
 
     /**

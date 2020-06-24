@@ -10,8 +10,8 @@ import com.ort.wolfmansion.domain.model.message.MessageType
 import com.ort.wolfmansion.domain.model.skill.Skill
 import com.ort.wolfmansion.domain.model.skill.SkillRequest
 import com.ort.wolfmansion.domain.model.village.VillageDays
-import com.ort.wolfmansion.domain.model.village.VillageParticipant
-import com.ort.wolfmansion.domain.model.village.VillageParticipants
+import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
+import com.ort.wolfmansion.domain.model.village.participant.VillageParticipants
 import com.ort.wolfmansion.domain.model.village.VillageStatus
 import com.ort.wolfmansion.domain.model.village.Villages
 import com.ort.wolfmansion.domain.model.village.settings.PersonCapacity
@@ -49,7 +49,7 @@ object VillageDataConverter {
                 count = spectatorList.size,
                 list = spectatorList.map { convertToVillageParticipant(it, villageDays) }
             ),
-            day = villageDays,
+            days = villageDays,
             winCamp = village.winCampCodeAsCamp?.let { com.ort.wolfmansion.domain.model.camp.Camp(it) }
         )
     }
@@ -68,7 +68,7 @@ object VillageDataConverter {
             setting = convertToVillageSetting(village.villageSettingsAsOne.get(), village.messageRestrictionList),
             participant = VillageParticipants(count = village.participantCount),
             spectator = VillageParticipants(count = village.visitorCount),
-            day = VillageDays( // 最新の1日だけ
+            days = VillageDays( // 最新の1日だけ
                 list = village.villageDayList.firstOrNull()?.let {
                     listOf(convertToVillageDay(it))
                 }.orEmpty()

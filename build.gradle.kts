@@ -15,6 +15,13 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    getByName("main").java.srcDirs("src/main/kotlin")
+    getByName("test").java.srcDirs("src/test")
+    getByName("main").resources.srcDirs("src/main/resources")
+    getByName("test").resources.srcDirs("src/test/resources")
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -29,6 +36,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa") {
         exclude("com.zaxxer:HikariCP")
     }
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.apache.tomcat:tomcat-jdbc:9.0.10")
     // dbflute
     implementation("org.dbflute:dbflute-runtime:1.2.1")

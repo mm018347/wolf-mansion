@@ -58,13 +58,13 @@ class AbilityDataSource(
             it.query().setVillageId_Equal(villageId)
             it.query().setDay_Equal(villageAbility.day)
             // 襲撃だけは連動するので誰がセットしたかは無関係
-            if (villageAbility.ability.toCdef() != CDef.AbilityType.襲撃) {
+            if (villageAbility.abilityType.toCdef() != CDef.AbilityType.襲撃) {
                 it.query().queryCharaByCharaId().existsVillagePlayer { vpCB ->
                     vpCB.query().setVillageId_Equal(villageId)
                     vpCB.query().setIsGone_Equal_False()
                 }
             }
-            it.query().setAbilityTypeCode_Equal_AsAbilityType(villageAbility.ability.toCdef())
+            it.query().setAbilityTypeCode_Equal_AsAbilityType(villageAbility.abilityType.toCdef())
         }
     }
 
@@ -75,7 +75,7 @@ class AbilityDataSource(
         ability.charaId = selectCharaIdByVillagePlayerId(villageId, villageAbility.myselfId)
         ability.targetCharaId = villageAbility.targetId?.let { selectCharaIdByVillagePlayerId(villageId, it) }
         ability.targetFootstep = villageAbility.targetFootstep
-        ability.abilityTypeCodeAsAbilityType = villageAbility.ability.toCdef()
+        ability.abilityTypeCodeAsAbilityType = villageAbility.abilityType.toCdef()
         abilityBhv.insert(ability)
     }
 
@@ -96,8 +96,7 @@ class AbilityDataSource(
             myselfId = ability.charaByCharaId.get().villagePlayerList.first().villagePlayerId,
             targetId = ability.charaByTargetCharaId.map { it.villagePlayerList.first().villagePlayerId }.orElse(null),
             targetFootstep = ability.targetFootstep,
-            ability = com.ort.wolfmansion.domain.model.ability.Ability(ability.abilityTypeCodeAsAbilityType)
+            abilityType = com.ort.wolfmansion.domain.model.ability.AbilityType(ability.abilityTypeCodeAsAbilityType)
         )
     }
-
 }

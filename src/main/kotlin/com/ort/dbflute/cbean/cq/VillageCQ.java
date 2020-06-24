@@ -1,8 +1,11 @@
 package com.ort.dbflute.cbean.cq;
 
+import com.ort.dbflute.allcommon.CDef;
+import com.ort.dbflute.cbean.cq.bs.BsVillageCQ;
 import org.dbflute.cbean.ConditionQuery;
 import org.dbflute.cbean.sqlclause.SqlClause;
-import com.ort.dbflute.cbean.cq.bs.BsVillageCQ;
+
+import java.util.Arrays;
 
 /**
  * The condition-query of VILLAGE.
@@ -18,6 +21,7 @@ public class VillageCQ extends BsVillageCQ {
     //                                                                         Constructor
     //                                                                         ===========
     // You should NOT touch with this constructor.
+
     /**
      * Auto-generated constructor to create query instance, basically called in DBFlute.
      * @param referrerQuery The instance of referrer query. (NullAllowed: if null, this is base query)
@@ -32,5 +36,8 @@ public class VillageCQ extends BsVillageCQ {
     // ===================================================================================
     //                                                                       Arrange Query
     //                                                                       =============
-    // You can make your arranged query methods here. e.g. public void arrangeXxx()
+    public void arrangeNotSolvedStatus() {
+        setVillageStatusCode_InScope_AsVillageStatus(
+                Arrays.asList(CDef.VillageStatus.募集中, CDef.VillageStatus.開始待ち, CDef.VillageStatus.進行中));
+    }
 }

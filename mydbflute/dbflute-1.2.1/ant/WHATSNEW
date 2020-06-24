@@ -2228,7 +2228,7 @@ Fixed bugs:
 
 Other Changes:
 --------------
-* Added ability to specify manifest encoding for the <jar> and
+* Added abilityType to specify manifest encoding for the <jar> and
   <manifest> tasks
 
 Changes from Ant 1.5.1 to Ant 1.5.2
@@ -2929,7 +2929,7 @@ Other changes:
   the given name already exists.
 
 * A new revision of VAJ tasks: The most important new feature
-  is the ability to execute VAJ tasks from the command line by
+  is the abilityType to execute VAJ tasks from the command line by
   exploiting the Remote Tool Access feature of VAJ.
 
 * Improved support for Novell NetWare.
@@ -3285,7 +3285,7 @@ Other changes:
   modification times for example)
 
 * added vmlauncher attribute to exec tasks. This defaults to true. If
-  it is set to false, the VM's ability to launch commands in bypassed
+  it is set to false, the VM's abilityType to launch commands in bypassed
   and the OS shell, either directly or through the auxillary antRun
   scripts is used.
 

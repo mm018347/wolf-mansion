@@ -458,7 +458,7 @@
 			</table_properties>
 		</table>
 		<table>
-			<physical_name>ability</physical_name>
+			<physical_name>abilityType</physical_name>
 			<logical_name>能力行使</logical_name>
 			<description></description>
 			<font_name>.AppleSystemUIFont</font_name>
@@ -474,7 +474,7 @@
 				<relationship>
 					<name>FK_ability_village_day</name>
 					<source>table.village_day</source>
-					<target>table.ability</target>
+					<target>table.abilityType</target>
 					<fk_columns>
 						<fk_column>
 							<fk_column_name>village_id</fk_column_name>
@@ -494,7 +494,7 @@
 				<relationship>
 					<name>FK_ability_CHARA</name>
 					<source>table.CHARA</source>
-					<target>table.ability</target>
+					<target>table.abilityType</target>
 					<fk_columns>
 						<fk_column>
 							<fk_column_name>chara_id</fk_column_name>
@@ -513,7 +513,7 @@
 				<relationship>
 					<name>FK_ability_CHARA_target</name>
 					<source>table.CHARA</source>
-					<target>table.ability</target>
+					<target>table.abilityType</target>
 					<fk_columns>
 						<fk_column>
 							<fk_column_name>target_chara_id</fk_column_name>
@@ -532,7 +532,7 @@
 				<relationship>
 					<name>FK_ability_ability_type</name>
 					<source>table.ability_type</source>
-					<target>table.ability</target>
+					<target>table.abilityType</target>
 					<fk_columns>
 						<fk_column>
 							<fk_column_name>ability_type_code</fk_column_name>

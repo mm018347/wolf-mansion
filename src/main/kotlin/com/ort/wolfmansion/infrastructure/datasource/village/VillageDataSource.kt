@@ -1,5 +1,6 @@
 package com.ort.wolfmansion.infrastructure.datasource.village
 
+import com.ort.dbflute.allcommon.CDef
 import com.ort.dbflute.exbhv.MessageRestrictionBhv
 import com.ort.dbflute.exbhv.VillageBhv
 import com.ort.dbflute.exbhv.VillageDayBhv
@@ -10,8 +11,8 @@ import com.ort.dbflute.exentity.Village
 import com.ort.dbflute.exentity.VillageDay
 import com.ort.dbflute.exentity.VillagePlayer
 import com.ort.dbflute.exentity.VillageSettings
-import com.ort.wolfmansion.domain.model.village.VillageParticipant
 import com.ort.wolfmansion.domain.model.village.Villages
+import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
 import com.ort.wolfmansion.domain.model.village.settings.VillageMessageRestrict
 import com.ort.wolfmansion.fw.security.WolfMansionUser
 import org.springframework.stereotype.Repository
@@ -79,6 +80,38 @@ class VillageDataSource(
         val villageList = villageBhv.selectList {
             it.setupSelect_VillageSettingsAsOne()
             it.query().setVillageId_InScope(villageIdList)
+            it.query().addOrderBy_VillageId_Desc()
+        }
+        villageBhv.load(villageList) { loader ->
+            loader.loadVillagePlayer { vpcb ->
+                vpcb.query().setIsGone_Equal_False()
+            }.withNestedReferrer {
+                it.pulloutChara().loadCharaImage { }
+            }
+            loader.loadVillageDay {
+                it.query().addOrderBy_Day_Asc()
+            }
+            loader.loadMessageRestriction { }
+        }
+
+        return Villages(villageList.map { VillageDataConverter.convertVillage(it) })
+    }
+
+    fun findSolvedVillagesAsDetail(
+        user: WolfMansionUser
+    ): Villages {
+        val villageList = villageBhv.selectList {
+            it.setupSelect_VillageSettingsAsOne()
+            it.query().existsVillagePlayer { vpCB ->
+                vpCB.query().setIsGone_Equal_False()
+                vpCB.query().queryPlayer().setPlayerName_Equal(user.name)
+            }
+            it.query().setVillageStatusCode_InScope_AsVillageStatus(
+                listOf(
+                    CDef.VillageStatus.エピローグ,
+                    CDef.VillageStatus.終了
+                )
+            )
             it.query().addOrderBy_VillageId_Desc()
         }
         villageBhv.load(villageList) { loader ->
@@ -377,16 +410,16 @@ class VillageDataSource(
         before: com.ort.wolfmansion.domain.model.village.Village,
         after: com.ort.wolfmansion.domain.model.village.Village
     ) {
-        if (!before.day.existsDifference(after.day)) return
+        if (!before.days.existsDifference(after.days)) return
         // 新規を追加
-        after.day.list
-            .filterNot { afterDay -> before.day.list.any { it.day == afterDay.day } }
+        after.days.list
+            .filterNot { afterDay -> before.days.list.any { it.day == afterDay.day } }
             .forEach { insertVillageDay(after.id, it) }
         // すでにある分を更新
-        after.day.list
-            .filter { afterDay -> before.day.list.any { it.day == afterDay.day } }
+        after.days.list
+            .filter { afterDay -> before.days.list.any { it.day == afterDay.day } }
             .forEach { afterDay ->
-                val beforeDay = before.day.list.first { it.day == afterDay.day }
+                val beforeDay = before.days.list.first { it.day == afterDay.day }
                 if (afterDay.existsDifference(beforeDay)) updateVillageDay(after.id, afterDay)
             }
 

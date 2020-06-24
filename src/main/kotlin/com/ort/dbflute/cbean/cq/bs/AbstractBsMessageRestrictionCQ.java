@@ -672,6 +672,16 @@ public abstract class AbstractBsMessageRestrictionCQ extends AbstractConditionQu
     /**
      * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
      * 役職 <br>
+     * 囁きを見られる <br>
+     * The group elements:[人狼, 呪狼, 智狼, C国狂人]
+     */
+    public void setSkillCode_InScope_ViewableWerewolfSay() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfViewableWerewolfSay());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
      * 囁き可能 <br>
      * The group elements:[人狼, 呪狼, 智狼, C国狂人]
      */
@@ -682,11 +692,101 @@ public abstract class AbstractBsMessageRestrictionCQ extends AbstractConditionQu
     /**
      * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
      * 役職 <br>
-     * 占い能力を持つ <br>
-     * The group elements:[占い師, 賢者, 占星術師]
+     * 共鳴発言を見られる <br>
+     * The group elements:[共鳴者]
+     */
+    public void setSkillCode_InScope_ViewableMasonSay() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfViewableMasonSay());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 共鳴発言可能 <br>
+     * The group elements:[共鳴者]
+     */
+    public void setSkillCode_InScope_AvailableMasonSay() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfAvailableMasonSay());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 白黒占い能力を持つ <br>
+     * The group elements:[占い師]
      */
     public void setSkillCode_InScope_HasDivineAbility() {
         setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasDivineAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 白黒占い結果が人狼になる <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     */
+    public void setSkillCode_InScope_DivineResultWolf() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfDivineResultWolf());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 役職占い能力を持つ <br>
+     * The group elements:[賢者]
+     */
+    public void setSkillCode_InScope_HasWiseAbility() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasWiseAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 占星術能力を持つ <br>
+     * The group elements:[占星術師]
+     */
+    public void setSkillCode_InScope_HasAstroAbility() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasAstroAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 占いにより死亡する <br>
+     * The group elements:[妖狐]
+     */
+    public void setSkillCode_InScope_DeadByDivine() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfDeadByDivine());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 占いにより占った側が死亡する <br>
+     * The group elements:[呪狼]
+     */
+    public void setSkillCode_InScope_CounterDeadByDivine() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfCounterDeadByDivine());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 白黒霊能能力を持つ <br>
+     * The group elements:[霊能者]
+     */
+    public void setSkillCode_InScope_HasPsychicAbility() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasPsychicAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 白黒霊能結果が人狼になる <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     */
+    public void setSkillCode_InScope_PsychicResultWolf() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfPsychicResultWolf());
     }
 
     /**
@@ -702,11 +802,101 @@ public abstract class AbstractBsMessageRestrictionCQ extends AbstractConditionQu
     /**
      * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
      * 役職 <br>
+     * 護衛能力を持つ <br>
+     * The group elements:[狩人]
+     */
+    public void setSkillCode_InScope_HasGuardAbility() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasGuardAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 検死能力を持つ <br>
+     * The group elements:[検死官]
+     */
+    public void setSkillCode_InScope_HasAutopsyAbility() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasAutopsyAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 探偵能力を持つ <br>
+     * The group elements:[探偵]
+     */
+    public void setSkillCode_InScope_HasInvestigateAbility() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasInvestigateAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 罠能力を持つ <br>
+     * The group elements:[罠師]
+     */
+    public void setSkillCode_InScope_HasTrapAbility() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasTrapAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 爆弾能力を持つ <br>
+     * The group elements:[爆弾魔]
+     */
+    public void setSkillCode_InScope_HasBombAbility() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasBombAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * パン屋能力を持つ <br>
+     * The group elements:[パン屋]
+     */
+    public void setSkillCode_InScope_HasBakeryAbility() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasBakeryAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
      * 襲撃能力を持つ <br>
      * The group elements:[人狼, 呪狼, 智狼]
      */
     public void setSkillCode_InScope_HasAttackAbility() {
         setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasAttackAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 襲撃に成功すると対象の役職を知ることができる <br>
+     * The group elements:[智狼]
+     */
+    public void setSkillCode_InScope_HasAttackWiseAbility() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfHasAttackWiseAbility());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 襲撃されても死なない <br>
+     * The group elements:[妖狐, 爆弾魔]
+     */
+    public void setSkillCode_InScope_NoDeadByAttack() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfNoDeadByAttack());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 襲撃対象に選べない <br>
+     * The group elements:[人狼, 呪狼, 智狼]
+     */
+    public void setSkillCode_InScope_NotSelectableAttack() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfNotSelectableAttack());
     }
 
     /**
@@ -732,11 +922,31 @@ public abstract class AbstractBsMessageRestrictionCQ extends AbstractConditionQu
     /**
      * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
      * 役職 <br>
-     * 襲撃されても死なない <br>
-     * The group elements:[妖狐, 爆弾魔]
+     * 勝敗判定時狼にカウントする <br>
+     * The group elements:[人狼, 呪狼, 智狼]
      */
-    public void setSkillCode_InScope_NoDeadByAttack() {
-        setSkillCode_InScope_AsSkill(CDef.Skill.listOfNoDeadByAttack());
+    public void setSkillCode_InScope_CountWolf() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfCountWolf());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * 勝敗判定時に人間としてカウントしない <br>
+     * The group elements:[妖狐]
+     */
+    public void setSkillCode_InScope_NoCount() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfNoCount());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As Skill. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 役職 <br>
+     * おまかせ系 <br>
+     * The group elements:[おまかせ, おまかせ村人陣営, おまかせ人狼陣営, おまかせ人外, おまかせ足音職, おまかせ役職窓あり]
+     */
+    public void setSkillCode_InScope_SomeoneSkill() {
+        setSkillCode_InScope_AsSkill(CDef.Skill.listOfSomeoneSkill());
     }
 
     protected void doSetSkillCode_InScope(Collection<String> skillCodeList) {

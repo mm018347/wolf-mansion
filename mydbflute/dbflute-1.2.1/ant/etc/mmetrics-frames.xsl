@@ -296,7 +296,7 @@ The subclasses of a class inherit all of its public and protected methods,
 and possibly its package methods as well, so the number of methods a
 class has directly impacts the complexity of its subclasses. Classes with
 large numbers of methods are often specific to a particular application,
-reducing the ability to reuse them.
+reducing the abilityType to reuse them.
 <p/>
 The definition of WMC is based upon NLM, and it provides the same
 configuration parameters for counting inherited methods and of varying
