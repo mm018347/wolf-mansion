@@ -1,6 +1,5 @@
 package com.ort.wolfmansion.domain.service.daychange
 
-import com.ort.wolfmansion.domain.model.charachip.Charas
 import com.ort.wolfmansion.domain.model.daychange.DayChange
 import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.village.Village
@@ -13,7 +12,7 @@ class ExecuteService(
     private val voteDomainService: VoteDomainService
 ) {
 
-    fun process(dayChange: DayChange, charas: Charas): DayChange {
+    fun process(dayChange: DayChange): DayChange {
         // 1→2日目は処刑なし
         if (dayChange.village.days.latestDay().day <= 2) {
             return dayChange
@@ -33,7 +32,7 @@ class ExecuteService(
         if (votedMap.isEmpty()) return dayChange // 全員突然死
 
         // 個別投票メッセージ
-        messages = messages.add(voteDomainService.createEachVoteMessage(village, charas, votedMap))
+        messages = messages.add(voteDomainService.createEachVoteMessage(village, votedMap))
 
         // 得票数トップの参加者リスト
         val maxVotedParticipantIdList = filterMaxVotedParticipantList(votedMap)
@@ -44,7 +43,7 @@ class ExecuteService(
                 village = village.executeParticipant(executedParticipantId, village.days.latestDay())
             }
             // 処刑メッセージ
-            messages = messages.add(createExecuteMessage(village, executedParticipantId, votedMap, charas))
+            messages = messages.add(createExecuteMessage(village, executedParticipantId, votedMap))
         }
         return dayChange.copy(
             village = village,
@@ -74,15 +73,14 @@ class ExecuteService(
     private fun createExecuteMessage(
         village: Village,
         participantId: Int,
-        votedMap: Map<Int, List<VillageVote>>,
-        charas: Charas
+        votedMap: Map<Int, List<VillageVote>>
     ): Message {
-        val executedCharaName = charas.chara(village.participant, participantId).name.fullName()
+        val executedCharaName = village.participant.member(participantId).chara.name.fullName()
         val message = votedMap.entries.sortedBy { it.value.size }.reversed().joinToString(
             separator = "\n",
             postfix = "\n\n${executedCharaName}は村人達の手により処刑された。"
         ) { entry ->
-            val votedCharaName = charas.chara(village.participant, entry.key).name.fullName()
+            val votedCharaName = village.participant.member(entry.key).chara.name.fullName()
             "${votedCharaName}、${entry.value.size}票"
         }
         return Message.createPublicSystemMessage(

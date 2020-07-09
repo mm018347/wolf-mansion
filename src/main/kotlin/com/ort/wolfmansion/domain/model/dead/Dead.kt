@@ -18,4 +18,10 @@ data class Dead(
     )
 
     fun toCdef(): CDef.DeadReason = CDef.DeadReason.codeOf(code)
+
+    fun isSuddenly(): Boolean = toCdef() == CDef.DeadReason.突然
+
+    fun isExecuted(): Boolean = toCdef() == CDef.DeadReason.処刑
+
+    fun isMiserable(): Boolean = toCdef().isMiserableDeath
 }

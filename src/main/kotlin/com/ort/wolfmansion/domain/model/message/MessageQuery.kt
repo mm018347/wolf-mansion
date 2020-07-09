@@ -7,7 +7,7 @@ data class MessageQuery(
     val pageSize: Int?,
     val pageNum: Int?,
     val myself: VillageParticipant?,
-    var messageTypeList: List<CDef.MessageType>
+    val messageTypeList: List<CDef.MessageType>
 ) {
 
     constructor(
@@ -21,7 +21,6 @@ data class MessageQuery(
 
     constructor(
         myself: VillageParticipant?,
-        messageTypeList: List<CDef.MessageType>?,
         pageSize: Int?,
         pageNum: Int?,
         availableMessageTypeList: List<CDef.MessageType>
@@ -29,12 +28,6 @@ data class MessageQuery(
         pageSize = pageSize,
         pageNum = pageNum,
         myself = myself,
-        messageTypeList = listOf()
-    ) {
-        val requestMessageTypeList =
-            if (messageTypeList.isNullOrEmpty()) CDef.MessageType.listAll()
-            else messageTypeList
-        val queryMessageTypeList = requestMessageTypeList.filter { availableMessageTypeList.contains(it) }
-        this.messageTypeList = queryMessageTypeList
-    }
+        messageTypeList = availableMessageTypeList
+    )
 }

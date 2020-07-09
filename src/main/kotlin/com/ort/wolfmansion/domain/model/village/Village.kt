@@ -2,13 +2,17 @@ package com.ort.wolfmansion.domain.model.village
 
 import com.ort.dbflute.allcommon.CDef
 import com.ort.wolfmansion.domain.model.camp.Camp
-import com.ort.wolfmansion.domain.model.charachip.Charas
+import com.ort.wolfmansion.domain.model.charachip.Chara
+import com.ort.wolfmansion.domain.model.commit.Commits
 import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.message.MessageContent
+import com.ort.wolfmansion.domain.model.player.Player
 import com.ort.wolfmansion.domain.model.skill.Skill
 import com.ort.wolfmansion.domain.model.skill.SkillRequest
 import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
 import com.ort.wolfmansion.domain.model.village.participant.VillageParticipants
+import com.ort.wolfmansion.domain.model.village.room.VillageRooms
+import com.ort.wolfmansion.domain.model.village.vote.VillageVotes
 import com.ort.wolfmansion.fw.exception.WolfMansionBusinessException
 
 data class Village(
@@ -16,6 +20,7 @@ data class Village(
     val name: String,
     val creatorPlayerName: String,
     val status: VillageStatus,
+    val rooms: VillageRooms?,
     val winCamp: Camp?,
     val setting: VillageSettings,
     val participant: VillageParticipants,
@@ -74,8 +79,8 @@ data class Village(
     }
 
     /** ダミーキャラの1日目発言 */
-    fun createDummyCharaFirstDayMessage(charas: Charas): Message? {
-        val firstDayMessage = charas.chara(dummyParticipant().charaId).defaultMessage.firstDayMessage ?: return null
+    fun createDummyCharaFirstDayMessage(): Message? {
+        val firstDayMessage = dummyParticipant().chara.defaultMessage.firstDayMessage ?: return null
         val messageContent = MessageContent(
             messageType = CDef.MessageType.通常発言,
             text = firstDayMessage,
@@ -89,13 +94,51 @@ data class Village(
         )
     }
 
+    /** ステータスに応じたメッセージ */
+    fun createStatusMessage(isParticipating: Boolean): String {
+        return status.createStatusMessage(
+            capacity = setting.capacity,
+            latestDay = days.latestDay(),
+            winCamp = winCamp,
+            isParticipating = isParticipating
+        )
+    }
+
+    /** コミット状況 */
+    fun createCommitMessage(commits: Commits): String? {
+        if (!setting.rules.availableCommit || !status.isProgress()) return null
+        val commitCount = commits.list.count { it.day == days.latestDay().day }
+        val aliveCount = this.notDummyParticipant().filterAlive().filterNotGone().count
+        return "生存者全員がコミットすると日付が更新されます。\n\n" +
+            "現在 $commitCount/${aliveCount}人 がコミットしています。"
+    }
+
+    /** 突然死候補状況 */
+    fun createSuddenlyDeathMessage(votes: VillageVotes): String? {
+        if (!setting.rules.availableSuddenlyDeath || !status.isProgress()) return null
+        val voteParticipantIdList = votes.list
+            .filter { it.day == days.latestDay().day }
+            .map { it.myselfId }
+        val noVoteParticipantNameList = notDummyParticipant().filterNotGone().filterAlive().list.filterNot {
+            voteParticipantIdList.contains(it.id)
+        }.map { it.name() }
+        if (noVoteParticipantNameList.isEmpty()) return null
+        return "本日まだ投票していない者は、${noVoteParticipantNameList.joinToString(separator = "、")}" +
+            "\n\n※未投票で更新時刻を迎えると突然死します。"
+    }
+
     // ===================================================================================
     //                                                                                read
     //                                                                           =========
     fun dummyParticipant(): VillageParticipant = participant.memberByCharaId(setting.charachip.dummyCharaId)
 
+    fun findPersonByParticipantId(participantId: Int): VillageParticipant? {
+        participant.findMember(participantId)?.let { return it }
+        return spectator.findMember(participantId)?.let { it }
+    }
+
     fun notDummyParticipant(): VillageParticipants {
-        val notDummyMembers = participant.list.filter { it.charaId != setting.charachip.dummyCharaId }
+        val notDummyMembers = participant.list.filter { it.chara.id != setting.charachip.dummyCharaId }
         return VillageParticipants(
             count = notDummyMembers.size,
             list = notDummyMembers
@@ -227,15 +270,15 @@ data class Village(
     //                                                                        ============
     // 入村
     fun participate(
-        playerId: Int,
-        charaId: Int,
+        player: Player,
+        chara: Chara,
         firstRequestSkill: CDef.Skill = CDef.Skill.おまかせ,
         secondRequestSkill: CDef.Skill = CDef.Skill.おまかせ
     ): Village {
         return this.copy(
             participant = participant.addParticipant(
-                charaId = charaId,
-                playerId = playerId,
+                chara = chara,
+                player = player,
                 skillRequest = SkillRequest(Skill(firstRequestSkill), Skill(secondRequestSkill)),
                 isSpectator = false
             )
@@ -244,13 +287,13 @@ data class Village(
 
     // 見学
     fun spectate(
-        playerId: Int,
-        charaId: Int
+        player: Player,
+        chara: Chara
     ): Village {
         return this.copy(
             spectator = spectator.addParticipant(
-                charaId = charaId,
-                playerId = playerId,
+                chara = chara,
+                player = player,
                 skillRequest = SkillRequest(Skill(CDef.Skill.おまかせ), Skill(CDef.Skill.おまかせ)),
                 isSpectator = true
             )
@@ -315,8 +358,8 @@ data class Village(
     //                                                                        Assist Logic
     //                                                                        ============
     private fun isAlreadyParticipateCharacter(charaId: Int): Boolean {
-        return participant.list.any { it.charaId == charaId }
-            || spectator.list.any { it.charaId == charaId }
+        return participant.list.any { it.chara.id == charaId }
+            || spectator.list.any { it.chara.id == charaId }
     }
 
     private fun assertPassword(password: String?) {

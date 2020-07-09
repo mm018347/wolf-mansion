@@ -14,15 +14,20 @@ import com.ort.wolfmansion.domain.model.charachip.Charas
 import com.ort.wolfmansion.domain.model.commit.Commit
 import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.message.MessageContent
+import com.ort.wolfmansion.domain.model.myself.SituationAsParticipant
 import com.ort.wolfmansion.domain.model.player.Player
+import com.ort.wolfmansion.domain.model.player.Players
+import com.ort.wolfmansion.domain.model.skill.SkillRequest
 import com.ort.wolfmansion.domain.model.village.Village
+import com.ort.wolfmansion.domain.model.village.ability.VillageAbilities
 import com.ort.wolfmansion.domain.model.village.ability.VillageAbility
 import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
 import com.ort.wolfmansion.domain.model.village.vote.VillageVote
+import com.ort.wolfmansion.domain.model.village.vote.VillageVotes
 import com.ort.wolfmansion.domain.service.say.SayService
 import com.ort.wolfmansion.domain.service.skill.SkillRequestService
-import com.ort.wolfmansion.domain.service.village.participate.LeaveService
 import com.ort.wolfmansion.domain.service.village.participate.ParticipateService
+import com.ort.wolfmansion.domain.service.village.settings.SettingsService
 import com.ort.wolfmansion.fw.exception.WolfMansionBusinessException
 import com.ort.wolfmansion.fw.security.WolfMansionUser
 import org.springframework.stereotype.Service
@@ -41,12 +46,12 @@ class VillageCoordinator(
     private val dayChangeCoordinator: DayChangeCoordinator,
     // domain service
     private val participateService: ParticipateService,
-    private val leaveService: LeaveService,
     private val sayService: SayService,
     private val skillRequestService: SkillRequestService,
-    private val abilityDomainDomainService: com.ort.wolfmansion.domain.service.ability.AbilityDomainService,
+    private val abilityDomainService: com.ort.wolfmansion.domain.service.ability.AbilityDomainService,
     private val voteDomainService: com.ort.wolfmansion.domain.service.vote.VoteDomainService,
-    private val commitDomainService: com.ort.wolfmansion.domain.service.commit.CommitDomainService
+    private val commitDomainService: com.ort.wolfmansion.domain.service.commit.CommitDomainService,
+    private val settingService: SettingsService
 ) {
 
     /**
@@ -62,8 +67,8 @@ class VillageCoordinator(
      * 村参加者取得
      */
     fun findParticipant(village: Village, playerId: Int): VillageParticipant? {
-        val participant: VillageParticipant? = village.participant.list.find { it.playerId == playerId && !it.isGone }
-        return participant ?: village.spectator.list.find { it.playerId == playerId && !it.isGone }
+        val participant: VillageParticipant? = village.participant.list.find { it.player.id == playerId && !it.isGone }
+        return participant ?: village.spectator.list.find { it.player.id == playerId && !it.isGone }
     }
 
     /**
@@ -134,8 +139,8 @@ class VillageCoordinator(
     @Transactional(rollbackFor = [Exception::class, WolfMansionBusinessException::class])
     fun participate(
         villageId: Int,
-        playerId: Int,
-        charaId: Int,
+        player: Player,
+        chara: Chara,
         message: String,
         isSpectate: Boolean,
         firstRequestSkill: CDef.Skill = CDef.Skill.おまかせ,
@@ -145,20 +150,19 @@ class VillageCoordinator(
         var village: Village = villageService.findVillage(villageId)
         val changedVillage: Village = if (isSpectate) {
             village.spectate(
-                playerId = playerId,
-                charaId = charaId
+                player = player,
+                chara = chara
             )
         } else {
             village.participate(
-                playerId = playerId,
-                charaId = charaId,
+                player = player,
+                chara = chara,
                 firstRequestSkill = firstRequestSkill,
                 secondRequestSkill = secondRequestSkill
             )
         }
         village = villageService.updateVillageDifference(village, changedVillage)
-        val participant: VillageParticipant = findParticipant(village, playerId)!!
-        val chara: Chara = charachipService.findChara(charaId)
+        val participant: VillageParticipant = findParticipant(village, player.id)!!
         // {N}人目、{キャラ名} とユーザー入力の発言
         messageService.registerParticipateMessage(
             village = village,
@@ -194,15 +198,14 @@ class VillageCoordinator(
         // 退村できない状況ならエラー
         val village: Village = villageService.findVillage(villageId)
         val participant: VillageParticipant? = findParticipant(village, user)
-        leaveService.assertLeave(village, participant)
+        participateService.assertLeave(village, participant)
         // 退村
         val updatedVillage: Village = villageService.updateVillageDifference(
             village,
             village.leaveParticipant(participant!!.id)
         )
         // 退村メッセージ
-        val chara: Chara = charachipService.findChara(participant.charaId)
-        messageService.registerLeaveMessage(updatedVillage, chara)
+        messageService.registerLeaveMessage(updatedVillage, participant.chara)
     }
 
     /**
@@ -252,7 +255,7 @@ class VillageCoordinator(
         val village: Village = villageService.findVillage(villageId)
         val participant: VillageParticipant? = findParticipant(village, user)
         val abilityType = AbilityType(CDef.AbilityType.codeOf(abilityTypeCode))
-        abilityDomainDomainService.assertAbility(village, participant, abilityType, targetId)
+        abilityDomainService.assertAbility(village, participant, abilityType, targetId)
         // 能力セット
         val villageAbility = VillageAbility(
             village.days.latestDay().day,
@@ -304,39 +307,37 @@ class VillageCoordinator(
         // コミット
         val commit = Commit(village.days.latestDay().day, participant!!.id, doCommit)
         commitService.updateCommit(village.id, commit)
-        val chara: Chara = charachipService.findChara(participant.charaId)
-        messageService.registerCommitMessage(village, chara, doCommit)
+        messageService.registerCommitMessage(village, participant.chara, doCommit)
         // 日付更新
         if (doCommit) dayChangeCoordinator.dayChangeIfNeeded(village)
     }
 
-//    fun findActionSituation(
-//        village: Village,
-//        user: WolfMansionUser?,
-//        players: Players,
-//        charas: Charas
-//    ): SituationAsParticipant {
-//        val player: Player? = if (user == null) null else playerService.findPlayer(user)
-//        val participant: VillageParticipant? = findParticipant(village, user)
-//        val skillRequest: SkillRequest? = if (participant == null) null else village.participant.member(participant.id).skillRequest
-//        val abilities: VillageAbilities = abilityDomainService.findVillageAbilities(village.id)
-//        val votes: VillageVotes = voteService.findVillageVotes(village.id)
-//        val commit: Commit? = commitDomainService.findCommit(village, participant)
-//        val latestDayMessageList: List<Message> =
-//            messageService.findParticipateDayMessageList(village.id, village.days.latestDay(), participant)
-//
-//        return SituationAsParticipant(
-//            village,
-//            player,
-//            participant,
-//            charas,
-//            skillRequest,
-//            abilities,
-//            votes,
-//            commit,
-//            latestDayMessageList
-//        )
-//    }
+    fun findActionSituation(
+        village: Village,
+        user: WolfMansionUser?,
+        players: Players,
+        charas: Charas
+    ): SituationAsParticipant {
+        val player: Player? = user?.let { playerService.findPlayer(it) }
+        val participant: VillageParticipant? = findParticipant(village, user)
+        val skillRequest: SkillRequest? = participant?.let { village.participant.member(it.id).skillRequest }
+        val abilities: VillageAbilities = abilityService.findVillageAbilities(village.id)
+        val votes: VillageVotes = voteService.findVillageVotes(village.id)
+        val commit: Commit? = commitService.findCommit(village, participant)
+        val latestDayMessageList: List<Message> =
+            messageService.findParticipateDayMessageList(village.id, village.days.latestDay(), participant)
+
+        return SituationAsParticipant(
+            myself = participant,
+            participate = participateService.convertToSituation(participant, player, village, charas),
+            skillRequest = skillRequestService.convertToSituation(village, participant, skillRequest),
+            commit = commitDomainService.convertToSituation(village, participant, commit),
+            say = sayService.convertToSituation(village, participant, latestDayMessageList, charas),
+            ability = abilityDomainService.convertToSituation(participant, village, abilities),
+            vote = voteDomainService.convertToSituation(village, participant, votes),
+            creator = settingService.convertToSituation(village, participant)
+        )
+    }
 
     // ===================================================================================
     //                                                                        Assist Logic
@@ -354,12 +355,13 @@ class VillageCoordinator(
     }
 
     private fun participateDummyChara(villageId: Int, village: Village, dummyChara: Chara) {
-        val dummyPlayerId = 1 // 固定
+        val player = playerService.findPlayer(1) // 固定
+        val chara = charachipService.findChara(village.setting.charachip.dummyCharaId)
         val message: String = dummyChara.defaultMessage.joinMessage ?: "人狼なんているわけないじゃん。みんな大げさだなあ"
         this.participate(
             villageId = villageId,
-            playerId = dummyPlayerId,
-            charaId = village.setting.charachip.dummyCharaId,
+            player = player,
+            chara = chara,
             message = message,
             isSpectate = false
         )
@@ -368,9 +370,8 @@ class VillageCoordinator(
     private fun assertSay(villageId: Int, user: WolfMansionUser?, messageContent: MessageContent) {
         val village: Village = villageService.findVillage(villageId)
         val participant: VillageParticipant? = findParticipant(village, user)
-        val chara: Chara? = if (participant == null) null else charachipService.findChara(participant.charaId)
         val latestDayMessageList: List<Message> =
             messageService.findParticipateDayMessageList(villageId, village.days.latestDay(), participant)
-        sayService.assertSay(village, participant, chara, latestDayMessageList, messageContent)
+        sayService.assertSay(village, participant, participant?.chara, latestDayMessageList, messageContent)
     }
 }

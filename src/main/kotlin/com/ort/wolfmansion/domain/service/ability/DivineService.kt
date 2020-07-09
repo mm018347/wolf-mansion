@@ -3,7 +3,6 @@ package com.ort.wolfmansion.domain.service.ability
 import com.ort.dbflute.allcommon.CDef
 import com.ort.wolfmansion.domain.model.ability.AbilityType
 import com.ort.wolfmansion.domain.model.charachip.Chara
-import com.ort.wolfmansion.domain.model.charachip.Charas
 import com.ort.wolfmansion.domain.model.daychange.DayChange
 import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.village.Village
@@ -66,7 +65,7 @@ class DivineService {
         }
     }
 
-    fun process(dayChange: DayChange, charas: Charas): DayChange {
+    fun process(dayChange: DayChange): DayChange {
         val latestDay = dayChange.village.days.latestDay()
         var messages = dayChange.messages.copy()
         var village = dayChange.village.copy()
@@ -77,7 +76,7 @@ class DivineService {
             dayChange.abilities.filterYesterday(village).list.find {
                 it.myselfId == seer.id
             }?.let { ability ->
-                messages = messages.add(createDivineMessage(dayChange.village, charas, ability, seer))
+                messages = messages.add(createDivineMessage(dayChange.village, ability, seer))
                 // 呪殺対象なら死亡
                 if (isDivineKill(dayChange, ability.targetId!!)) village = village.divineKillParticipant(ability.targetId, latestDay)
                 // TODO 逆呪殺
@@ -99,12 +98,11 @@ class DivineService {
     //                                                                        ============
     private fun createDivineMessage(
         village: Village,
-        charas: Charas,
         ability: VillageAbility,
         seer: VillageParticipant
     ): Message {
-        val myChara = charas.chara(village.participant, ability.myselfId)
-        val targetChara = charas.chara(village.participant, ability.targetId!!)
+        val myChara = village.participant.member(ability.myselfId).chara
+        val targetChara = village.participant.member(ability.targetId!!).chara
         val isWolf = village.participant.member(ability.targetId).skill!!.toCdef().isDivineResultWolf
         val text = createDivineMessageString(myChara, targetChara, isWolf)
         return Message.createSeerPrivateMessage(text, village.days.latestDay().day, seer)

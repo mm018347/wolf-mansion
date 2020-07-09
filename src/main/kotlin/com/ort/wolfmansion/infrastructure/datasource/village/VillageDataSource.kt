@@ -15,6 +15,7 @@ import com.ort.wolfmansion.domain.model.village.Villages
 import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
 import com.ort.wolfmansion.domain.model.village.settings.VillageMessageRestrict
 import com.ort.wolfmansion.fw.security.WolfMansionUser
+import com.ort.wolfmansion.util.WolfMansionDateUtil
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -84,6 +85,8 @@ class VillageDataSource(
         }
         villageBhv.load(villageList) { loader ->
             loader.loadVillagePlayer { vpcb ->
+                vpcb.setupSelect_Chara()
+                vpcb.setupSelect_Player()
                 vpcb.query().setIsGone_Equal_False()
             }.withNestedReferrer {
                 it.pulloutChara().loadCharaImage { }
@@ -116,6 +119,8 @@ class VillageDataSource(
         }
         villageBhv.load(villageList) { loader ->
             loader.loadVillagePlayer { vpcb ->
+                vpcb.setupSelect_Chara()
+                vpcb.setupSelect_Player()
                 vpcb.query().setIsGone_Equal_False()
             }.withNestedReferrer {
                 it.pulloutChara().loadCharaImage { }
@@ -139,6 +144,8 @@ class VillageDataSource(
         }
         villageBhv.load(village) { loader ->
             loader.loadVillagePlayer { vpcb ->
+                vpcb.setupSelect_Chara()
+                vpcb.setupSelect_Player()
                 if (excludeGonePlayer) vpcb.query().setIsGone_Equal_False()
             }.withNestedReferrer {
                 it.pulloutChara().loadCharaImage { }
@@ -188,6 +195,17 @@ class VillageDataSource(
         updateMessageRestrictionDifference(before, after)
 
         return findVillage(before.id)
+    }
+
+    fun updateLastAccessDatetime(
+        villageId: Int,
+        participantId: Int
+    ) {
+        val participant = VillagePlayer()
+        participant.villageId = villageId
+        participant.villagePlayerId = participantId
+        participant.lastAccessDatetime = WolfMansionDateUtil.currentLocalDateTime()
+        villagePlayerBhv.update(participant)
     }
 
     // ===================================================================================
@@ -446,8 +464,8 @@ class VillageDataSource(
     ): Int {
         val vp = VillagePlayer()
         vp.villageId = villageId
-        vp.playerId = participant.playerId
-        vp.charaId = participant.charaId
+        vp.playerId = participant.player!!.id
+        vp.charaId = participant.chara!!.id
         vp.isDead = false
         vp.isSpectator = participant.isSpectator
         vp.isGone = false

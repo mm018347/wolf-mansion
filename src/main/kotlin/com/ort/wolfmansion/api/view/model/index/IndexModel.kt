@@ -14,7 +14,6 @@ data class IndexModel(
         villageList = villages.list.map { IndexVillageModel(it) },
         isAvailableCreateVillage = isAvailableCreateVillage
     )
-
 }
 
 data class IndexVillageModel(

@@ -9,14 +9,12 @@ import org.springframework.stereotype.Service
 @Service
 class MiserableDeathService {
 
-    fun process(dayChange: DayChange, charas: Charas): DayChange {
+    fun process(dayChange: DayChange): DayChange {
         val latestDay = dayChange.village.days.latestDay()
 
         val miserableDeathCharaList = dayChange.village.participant.list.filter {
             !it.isAlive() && it.dead?.villageDay?.day == latestDay.day && it.dead.toCdef().isMiserableDeath
-        }.map { member ->
-            charas.chara(member.charaId)
-        }
+        }.map { it.chara }
 
         return dayChange.copy(
             messages = dayChange.messages.add(createMiserableDeathMessage(dayChange.village, Charas(miserableDeathCharaList)))

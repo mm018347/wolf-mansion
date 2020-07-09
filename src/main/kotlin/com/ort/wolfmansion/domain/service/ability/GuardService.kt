@@ -3,7 +3,6 @@ package com.ort.wolfmansion.domain.service.ability
 import com.ort.dbflute.allcommon.CDef
 import com.ort.wolfmansion.domain.model.ability.AbilityType
 import com.ort.wolfmansion.domain.model.charachip.Chara
-import com.ort.wolfmansion.domain.model.charachip.Charas
 import com.ort.wolfmansion.domain.model.daychange.DayChange
 import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.village.Village
@@ -78,7 +77,7 @@ class GuardService {
         }
     }
 
-    fun process(dayChange: DayChange, charas: Charas): DayChange {
+    fun process(dayChange: DayChange): DayChange {
         val latestDay = dayChange.village.days.latestDay()
         var messages = dayChange.messages.copy()
 
@@ -88,7 +87,7 @@ class GuardService {
             dayChange.abilities.filterYesterday(dayChange.village).list.find {
                 it.myselfId == hunter.id
             }?.let { ability ->
-                messages = messages.add(createGuardMessage(dayChange.village, charas, ability))
+                messages = messages.add(createGuardMessage(dayChange.village, ability))
             }
         }
 
@@ -107,9 +106,9 @@ class GuardService {
     // ===================================================================================
     //                                                                        Assist Logic
     //                                                                        ============
-    private fun createGuardMessage(village: Village, charas: Charas, ability: VillageAbility): Message {
-        val myChara = charas.chara(village.participant, ability.myselfId)
-        val targetChara = charas.chara(village.participant, ability.targetId!!)
+    private fun createGuardMessage(village: Village, ability: VillageAbility): Message {
+        val myChara = village.participant.member(ability.myselfId).chara
+        val targetChara = village.participant.member(ability.targetId!!).chara
         val text = createGuardMessageString(myChara, targetChara)
         return Message.createPrivateSystemMessage(text, village.days.latestDay().day)
     }

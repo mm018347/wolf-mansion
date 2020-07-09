@@ -3,7 +3,6 @@ package com.ort.wolfmansion.domain.service.ability
 import com.ort.dbflute.allcommon.CDef
 import com.ort.wolfmansion.domain.model.ability.AbilityType
 import com.ort.wolfmansion.domain.model.charachip.Chara
-import com.ort.wolfmansion.domain.model.charachip.Charas
 import com.ort.wolfmansion.domain.model.daychange.DayChange
 import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.village.Village
@@ -87,7 +86,7 @@ class AttackService {
         }
     }
 
-    fun process(dayChange: DayChange, charas: Charas): DayChange {
+    fun process(dayChange: DayChange): DayChange {
         val latestDay = dayChange.village.days.latestDay()
         val aliveWolf = dayChange.village.participant.findRandom {
             it.isAlive() && it.skill!!.toCdef().isHasAttackAbility
@@ -101,7 +100,7 @@ class AttackService {
             it.targetId != null
         }?.let { ability ->
             // 襲撃メッセージ
-            messages = messages.add(createAttackMessage(village, charas, aliveWolf, ability))
+            messages = messages.add(createAttackMessage(village, aliveWolf, ability))
             // 襲撃成功したら死亡
             if (isAttackSuccess(dayChange, ability.targetId!!)) village = village.attackParticipant(ability.targetId, latestDay)
         } ?: return dayChange
@@ -152,13 +151,11 @@ class AttackService {
      */
     private fun createAttackMessage(
         village: Village,
-        charas: Charas,
         wolf: VillageParticipant,
         ability: VillageAbility
     ): Message {
-        val fromChara = charas.chara(wolf.charaId)
-        val targetChara = charas.chara(village.participant, ability.targetId!!)
-        val text = createAttackMessageString(fromChara, targetChara)
+        val targetChara = village.participant.member(ability.targetId!!).chara
+        val text = createAttackMessageString(wolf.chara, targetChara)
         return Message.createAttackPrivateMessage(text, village.days.latestDay().day)
     }
 

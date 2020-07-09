@@ -1,23 +1,38 @@
 package com.ort.wolfmansion.domain.model.village.participant
 
 import com.ort.dbflute.allcommon.CDef
+import com.ort.wolfmansion.domain.model.charachip.Chara
 import com.ort.wolfmansion.domain.model.dead.Dead
+import com.ort.wolfmansion.domain.model.player.Player
 import com.ort.wolfmansion.domain.model.skill.Skill
 import com.ort.wolfmansion.domain.model.skill.SkillRequest
 import com.ort.wolfmansion.domain.model.village.VillageDay
+import com.ort.wolfmansion.domain.model.village.room.VillageRoom
+import java.time.LocalDateTime
 
 data class VillageParticipant(
     val id: Int,
-    val charaId: Int,
-    val playerId: Int,
-    val roomNo: Int? = null,
+    val chara: Chara, // 本来はidで持つが妥協
+    val player: Player, // 本来はidで持つが妥協
+    val room: VillageRoom? = null,
     val dead: Dead? = null,
     val isSpectator: Boolean,
     val isGone: Boolean = false,
     val skill: Skill? = null,
     val skillRequest: SkillRequest,
-    val isWin: Boolean? = null
+    val isWin: Boolean? = null,
+    val lastAccessDatetime: LocalDateTime? = null
 ) {
+
+    fun name(): String {
+        val roomNoStr = room?.no?.toString()?.padStart(2, '0') ?: ""
+        return "[$roomNoStr${chara.name.shortName}] ${chara.name.name}"
+    }
+
+    fun shortName(): String {
+        val roomNoStr = room?.no?.toString()?.padStart(2, '0') ?: ""
+        return "$roomNoStr${chara.name.shortName}"
+    }
 
     fun isAlive(): Boolean = dead == null
 
@@ -123,7 +138,7 @@ data class VillageParticipant(
     // 通常発言可能か
     fun isSayableNormalSay(isEpilogue: Boolean): Boolean {
         // ダミーはOK
-        if (playerId == 1) return true
+        if (player.id == 1) return true
         // 見学は不可
         if (isSpectator) return false
         // エピローグ以外で死亡している場合は不可
@@ -133,7 +148,7 @@ data class VillageParticipant(
     // 囁き可能か
     fun isSayableWerewolfSay(): Boolean {
         // ダミーはOK
-        if (playerId == 1) return true
+        if (player.id == 1) return true
         // 死亡していたら不可
         if (!isAlive()) return false
         // 囁ける役職でなければ不可
@@ -143,7 +158,7 @@ data class VillageParticipant(
     // 墓下発言可能か
     fun isSayableGraveSay(): Boolean {
         // ダミーはOK
-        if (playerId == 1) return true
+        if (player.id == 1) return true
         // 死亡していなかったら不可
         if (isAlive()) return false
         // 見学は不可
@@ -159,14 +174,14 @@ data class VillageParticipant(
     // 見学発言可能か
     fun isSayableSpectateSay(): Boolean {
         // ダミーはOK
-        if (playerId == 1) return true
+        if (player.id == 1) return true
         return isSpectator // 見学していなかったら不可
     }
 
     fun existsDifference(participant: VillageParticipant): Boolean {
         if (id != participant.id) return true
-        if (charaId != participant.charaId) return true
-        if (playerId != participant.playerId) return true
+        if (chara.id != participant.chara.id) return true
+        if (player.id != participant.player.id) return true
         if (dead?.code != participant.dead?.code) return true
         if (isSpectator != participant.isSpectator) return true
         if (isGone != participant.isGone) return true

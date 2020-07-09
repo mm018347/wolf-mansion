@@ -7,5 +7,4 @@ data class Chara(
     val defaultMessage: CharaDefaultMessage,
     val display: CharaSize,
     val faces: CharaFaces
-) {
-}
+)

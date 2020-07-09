@@ -26,6 +26,7 @@ data class MessageContent(
 
     companion object {
 
+        const val lengthMax: Int = 400
         const val lineMax: Int = 20
 
         /**

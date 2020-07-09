@@ -1,6 +1,8 @@
 package com.ort.wolfmansion.domain.model.village.participant
 
 import com.ort.dbflute.allcommon.CDef
+import com.ort.wolfmansion.domain.model.charachip.Chara
+import com.ort.wolfmansion.domain.model.player.Player
 import com.ort.wolfmansion.domain.model.skill.Skill
 import com.ort.wolfmansion.domain.model.skill.SkillRequest
 import com.ort.wolfmansion.domain.model.village.VillageDay
@@ -10,6 +12,14 @@ data class VillageParticipants(
     val count: Int,
     val list: List<VillageParticipant> = listOf()
 ) {
+
+    constructor(
+        list: List<VillageParticipant>
+    ) : this(
+        count = list.size,
+        list = list
+    )
+
     // ===================================================================================
     //                                                                       filter / find
     //                                                                        ============
@@ -29,12 +39,16 @@ data class VillageParticipants(
         )
     }
 
+    fun findMember(participantId: Int): VillageParticipant? {
+        return list.firstOrNull { it.id == participantId }
+    }
+
     fun member(participantId: Int): VillageParticipant {
         return list.firstOrNull { it.id == participantId } ?: throw IllegalStateException("not exist participant. id: $id")
     }
 
     fun memberByCharaId(charaId: Int): VillageParticipant {
-        return list.firstOrNull { it.charaId == charaId } ?: throw IllegalStateException("not exist participant. charaId: $id")
+        return list.firstOrNull { it.chara.id == charaId } ?: throw IllegalStateException("not exist participant. charaId: $id")
     }
 
     fun findRandom(predicate: (VillageParticipant) -> Boolean): VillageParticipant? {
@@ -55,8 +69,8 @@ data class VillageParticipants(
     }
 
     fun addParticipant(
-        charaId: Int,
-        playerId: Int,
+        chara: Chara,
+        player: Player,
         skillRequest: SkillRequest,
         isSpectator: Boolean
     ): VillageParticipants {
@@ -64,8 +78,8 @@ data class VillageParticipants(
             count = count + 1,
             list = list + VillageParticipant(
                 id = -1, // dummy
-                charaId = charaId,
-                playerId = playerId,
+                chara = chara,
+                player = player,
                 isSpectator = isSpectator,
                 skillRequest = skillRequest
             )

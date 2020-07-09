@@ -1,7 +1,6 @@
 package com.ort.wolfmansion.domain.service.daychange
 
 import com.ort.dbflute.allcommon.CDef
-import com.ort.wolfmansion.domain.model.charachip.Charas
 import com.ort.wolfmansion.domain.model.daychange.DayChange
 import com.ort.wolfmansion.domain.model.message.Messages
 import com.ort.wolfmansion.domain.model.village.Village
@@ -20,8 +19,7 @@ class PrologueService(
 
     fun leaveParticipantIfNeeded(
         dayChange: DayChange,
-        todayMessages: Messages,
-        charas: Charas
+        todayMessages: Messages
     ): DayChange {
         // 24時間以内の発言
         val recentMessageList =
@@ -32,7 +30,7 @@ class PrologueService(
         dayChange.village.notDummyParticipant().list.forEach { member ->
             if (recentMessageList.none { message -> message.fromParticipantId!! == member.id }) {
                 village = village.leaveParticipant(member.id)
-                messages = messages.add(leaveService.createLeaveMessage(village, charas.chara(member.charaId)))
+                messages = messages.add(leaveService.createLeaveMessage(village, member.chara))
             }
         }
         return dayChange.copy(
@@ -53,8 +51,7 @@ class PrologueService(
     }
 
     fun dayChange(
-        dayChange: DayChange,
-        charas: Charas
+        dayChange: DayChange
     ): DayChange {
         // 開始メッセージ追加
         var messages = dayChange.messages.add(dayChange.village.createVillageDay1Message())
@@ -68,7 +65,7 @@ class PrologueService(
         // デフォルト能力行使指定
         val abilities = dayChange.abilities.add(abilityDomainService.createDefaultAbilities(village))
         // ダミーキャラ発言
-        village.createDummyCharaFirstDayMessage(charas)?.let { messages = messages.add(it) }
+        village.createDummyCharaFirstDayMessage()?.let { messages = messages.add(it) }
 
         return dayChange.copy(
             village = village,

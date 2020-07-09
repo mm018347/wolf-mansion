@@ -1,6 +1,5 @@
 package com.ort.wolfmansion.domain.service.daychange
 
-import com.ort.wolfmansion.domain.model.charachip.Charas
 import com.ort.wolfmansion.domain.model.commit.Commits
 import com.ort.wolfmansion.domain.model.daychange.DayChange
 import com.ort.wolfmansion.domain.model.message.Message
@@ -41,29 +40,28 @@ class ProgressService(
 
     fun dayChange(
         beforeDayChange: DayChange,
-        todayMessages: Messages,
-        charas: Charas
+        todayMessages: Messages
     ): DayChange {
         // 突然死
-        var dayChange = suddenlyDeathService.process(beforeDayChange, todayMessages, charas)
+        var dayChange = suddenlyDeathService.process(beforeDayChange, todayMessages)
 
         // 処刑
-        dayChange = executeService.process(dayChange, charas)
+        dayChange = executeService.process(dayChange)
 
         // 霊能
-        dayChange = psychicService.process(dayChange, charas)
+        dayChange = psychicService.process(dayChange)
 
         // 占い
-        dayChange = divineService.process(dayChange, charas)
+        dayChange = divineService.process(dayChange)
 
         // 護衛
-        dayChange = guardService.process(dayChange, charas)
+        dayChange = guardService.process(dayChange)
 
         // 襲撃
-        dayChange = attackDomainService.process(dayChange, charas)
+        dayChange = attackDomainService.process(dayChange)
 
         // 無惨メッセージ
-        dayChange = miserableDeathService.process(dayChange, charas)
+        dayChange = miserableDeathService.process(dayChange)
 
         // 2日目限定メッセージ
         dayChange = addDay2MessageIfNeeded(dayChange)
@@ -78,7 +76,7 @@ class ProgressService(
         dayChange = addDefaultVoteAndAbilities(dayChange)
 
         // 生存者メッセージ登録
-        dayChange = addAliveMemberMessage(dayChange, charas)
+        dayChange = addAliveMemberMessage(dayChange)
 
         return dayChange.setIsChange(beforeDayChange)
     }
@@ -120,19 +118,17 @@ class ProgressService(
     }
 
     // 生存者メッセージ
-    private fun addAliveMemberMessage(dayChange: DayChange, charas: Charas): DayChange {
+    private fun addAliveMemberMessage(dayChange: DayChange): DayChange {
         return dayChange.copy(
-            messages = dayChange.messages.add(createAliveMemberMessage(dayChange.village, charas))
+            messages = dayChange.messages.add(createAliveMemberMessage(dayChange.village))
         ).setIsChange(dayChange)
     }
 
-    private fun createAliveMemberMessage(village: Village, charas: Charas): Message {
+    private fun createAliveMemberMessage(village: Village): Message {
         val text = village.participant.filterAlive().list.joinToString(
             separator = "\n",
             prefix = "現在の生存者は以下の${village.participant.filterAlive().count}名。\n"
-        ) { member ->
-            charas.chara(member.charaId).name.fullName()
-        }
+        ) { member -> member.chara.name.fullName() }
         return Message.createPublicSystemMessage(text, village.days.latestDay().day)
     }
 

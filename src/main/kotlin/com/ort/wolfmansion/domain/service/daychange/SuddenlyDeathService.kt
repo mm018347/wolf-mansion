@@ -1,7 +1,6 @@
 package com.ort.wolfmansion.domain.service.daychange
 
 import com.ort.wolfmansion.domain.model.charachip.Chara
-import com.ort.wolfmansion.domain.model.charachip.Charas
 import com.ort.wolfmansion.domain.model.daychange.DayChange
 import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.message.Messages
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class SuddenlyDeathService {
 
-    fun process(dayChange: DayChange, todayMessages: Messages, charas: Charas): DayChange {
+    fun process(dayChange: DayChange, todayMessages: Messages): DayChange {
         var village = dayChange.village.copy()
         var players = dayChange.players.copy()
         var messages = dayChange.messages.copy()
@@ -28,9 +27,9 @@ class SuddenlyDeathService {
             // 突然死
             village = village.suddenlyDeathParticipant(member.id, latestDay)
             // 入村制限
-            players = players.restrictParticipation(member.playerId)
+            players = players.restrictParticipation(member.player.id)
             // 突然死メッセージ
-            messages = messages.add(createSuddenlyDeathMessage(charas.chara(member.charaId), latestDay.day))
+            messages = messages.add(createSuddenlyDeathMessage(member.chara, latestDay.day))
         }
 
         return dayChange.copy(

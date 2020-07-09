@@ -46,4 +46,7 @@ class VillageService(
      * 差分更新
      */
     fun updateVillageDifference(before: Village, after: Village): Village = villageDataSource.updateDifference(before, after)
+
+    /** 最終アクセス日時更新 */
+    fun updateLastAccessDatetime(villageId: Int, participantId: Int) = villageDataSource.updateLastAccessDatetime(villageId, participantId)
 }

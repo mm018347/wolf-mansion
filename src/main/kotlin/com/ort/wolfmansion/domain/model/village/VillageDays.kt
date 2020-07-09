@@ -1,7 +1,8 @@
 package com.ort.wolfmansion.domain.model.village
 
 data class VillageDays(
-    val list: List<VillageDay>
+    val list: List<VillageDay>,
+    val epilogueDay: Int?
 ) {
 
     private val extendHours: Long = 24L

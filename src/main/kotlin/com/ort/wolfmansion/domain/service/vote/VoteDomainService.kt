@@ -1,8 +1,8 @@
 package com.ort.wolfmansion.domain.service.vote
 
 import com.ort.wolfmansion.domain.model.charachip.Chara
-import com.ort.wolfmansion.domain.model.charachip.Charas
 import com.ort.wolfmansion.domain.model.message.Message
+import com.ort.wolfmansion.domain.model.myself.VoteSituation
 import com.ort.wolfmansion.domain.model.village.Village
 import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
 import com.ort.wolfmansion.domain.model.village.vote.VillageVote
@@ -13,28 +13,6 @@ import org.springframework.stereotype.Service
 @Service
 class VoteDomainService {
 
-    fun isAvailableVote(village: Village, participant: VillageParticipant?): Boolean {
-        // 参加者として可能か
-        participant ?: return false
-        if (!participant.isAvailableVote()) return false
-        // 村として可能か
-        return village.isAvailableVote()
-    }
-
-    fun getSelectableTargetList(village: Village, participant: VillageParticipant?): List<VillageParticipant> {
-        if (!isAvailableVote(village, participant)) return listOf()
-        return village.participant.list.filter { it.isAlive() }
-    }
-
-    fun getSelectingTarget(village: Village, participant: VillageParticipant?, votes: VillageVotes): VillageParticipant? {
-        if (!isAvailableVote(village, participant)) return null
-        val voteTargetParticipantId = votes.list.find {
-            it.day == village.days.latestDay().day
-                && it.myselfId == participant!!.id
-        }?.targetId ?: return null
-        return village.participant.member(voteTargetParticipantId)
-    }
-
     fun assertVote(village: Village, participant: VillageParticipant?, targetId: Int) {
         if (!isAvailableVote(village, participant)) throw WolfMansionBusinessException("投票できません")
         if (getSelectableTargetList(village, participant).none { it.id == targetId }) throw WolfMansionBusinessException("投票できません")
@@ -43,27 +21,25 @@ class VoteDomainService {
     /**
      * 投票結果メッセージ
      * @param village village
-     * @param charas charas
      * @param votedMap key: 非投票参加者ID, value: 投票
      * @return 投票結果メッセージ
      */
     fun createEachVoteMessage(
         village: Village,
-        charas: Charas,
         votedMap: Map<Int, List<VillageVote>>
     ): Message {
         val maxFromCharaNameLength = votedMap.values.flatten().map { vote ->
-            charas.chara(village.participant, vote.myselfId).name.fullName().length
+            village.participant.member(vote.myselfId).chara.name.fullName().length
         }.max()!!
         val maxToCharaNameLength = votedMap.values.flatten().map { vote ->
-            charas.chara(village.participant, vote.targetId).name.fullName().length
+            village.participant.member(vote.targetId).chara.name.fullName().length
         }.max()!!
 
         val text = votedMap.entries.sortedBy { it.value.size }.reversed().map { entry ->
             // 得票数が多い順
             entry.value.map { vote ->
-                val fromChara = charas.chara(village.participant, vote.myselfId)
-                val toChara = charas.chara(village.participant, vote.targetId)
+                val fromChara = village.participant.member(vote.myselfId).chara
+                val toChara = village.participant.member(vote.targetId).chara
                 createEachVoteResultString(
                     fromChara,
                     toChara,
@@ -100,9 +76,29 @@ class VoteDomainService {
         )
     }
 
+    fun convertToSituation(
+        village: Village,
+        participant: VillageParticipant?,
+        votes: VillageVotes
+    ): VoteSituation {
+        return VoteSituation(
+            isAvailableVote = isAvailableVote(village, participant),
+            targetList = getSelectableTargetList(village, participant),
+            target = getSelectingTarget(village, participant, votes)
+        )
+    }
+
     // ===================================================================================
     //                                                                        Assist Logic
     //                                                                        ============
+    private fun isAvailableVote(village: Village, participant: VillageParticipant?): Boolean {
+        // 参加者として可能か
+        participant ?: return false
+        if (!participant.isAvailableVote()) return false
+        // 村として可能か
+        return village.isAvailableVote()
+    }
+
     /**
      * @param fromChara 投票したキャラ
      * @param toChara 投票されたキャラ
@@ -128,5 +124,19 @@ class VoteDomainService {
                 padChar = '　'
             ) +
             "(${count}票)"
+    }
+
+    private fun getSelectableTargetList(village: Village, participant: VillageParticipant?): List<VillageParticipant> {
+        if (!isAvailableVote(village, participant)) return listOf()
+        return village.participant.list.filter { it.isAlive() }
+    }
+
+    private fun getSelectingTarget(village: Village, participant: VillageParticipant?, votes: VillageVotes): VillageParticipant? {
+        if (!isAvailableVote(village, participant)) return null
+        val voteTargetParticipantId = votes.list.find {
+            it.day == village.days.latestDay().day
+                && it.myselfId == participant!!.id
+        }?.targetId ?: return null
+        return village.participant.member(voteTargetParticipantId)
     }
 }

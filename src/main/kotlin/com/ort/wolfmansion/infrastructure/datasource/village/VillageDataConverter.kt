@@ -1,19 +1,27 @@
 package com.ort.wolfmansion.infrastructure.datasource.village
 
 import com.ort.dbflute.exentity.MessageRestriction
+import com.ort.dbflute.exentity.Player
 import com.ort.dbflute.exentity.Village
 import com.ort.dbflute.exentity.VillageDay
 import com.ort.dbflute.exentity.VillagePlayer
 import com.ort.dbflute.exentity.VillageSettings
+import com.ort.wolfmansion.domain.model.charachip.CharaDefaultMessage
+import com.ort.wolfmansion.domain.model.charachip.CharaFace
+import com.ort.wolfmansion.domain.model.charachip.CharaFaces
+import com.ort.wolfmansion.domain.model.charachip.CharaName
+import com.ort.wolfmansion.domain.model.charachip.CharaSize
 import com.ort.wolfmansion.domain.model.dead.Dead
 import com.ort.wolfmansion.domain.model.message.MessageType
 import com.ort.wolfmansion.domain.model.skill.Skill
 import com.ort.wolfmansion.domain.model.skill.SkillRequest
 import com.ort.wolfmansion.domain.model.village.VillageDays
-import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
-import com.ort.wolfmansion.domain.model.village.participant.VillageParticipants
 import com.ort.wolfmansion.domain.model.village.VillageStatus
 import com.ort.wolfmansion.domain.model.village.Villages
+import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
+import com.ort.wolfmansion.domain.model.village.participant.VillageParticipants
+import com.ort.wolfmansion.domain.model.village.room.VillageRoom
+import com.ort.wolfmansion.domain.model.village.room.VillageRooms
 import com.ort.wolfmansion.domain.model.village.settings.PersonCapacity
 import com.ort.wolfmansion.domain.model.village.settings.VillageCharachip
 import com.ort.wolfmansion.domain.model.village.settings.VillageMessageRestrict
@@ -34,12 +42,16 @@ object VillageDataConverter {
     fun convertVillage(village: Village): com.ort.wolfmansion.domain.model.village.Village {
         val participantList = village.villagePlayerList.filter { it.isParticipant }
         val spectatorList = village.villagePlayerList.filter { it.isVisitor }
-        val villageDays = VillageDays(village.villageDayList.map { convertToVillageDay(it) })
+        val villageDays = VillageDays(
+            list = village.villageDayList.map { convertToVillageDay(it) },
+            epilogueDay = village.epilogueDay
+        )
         return com.ort.wolfmansion.domain.model.village.Village(
             id = village.villageId,
             name = village.villageDisplayName,
             creatorPlayerName = village.createPlayerName,
             status = VillageStatus(village.villageStatusCodeAsVillageStatus),
+            rooms = convertToVillageRooms(village),
             setting = convertToVillageSetting(village.villageSettingsAsOne.get(), village.messageRestrictionList),
             participant = VillageParticipants(
                 count = participantList.size,
@@ -65,13 +77,15 @@ object VillageDataConverter {
             name = village.villageDisplayName,
             creatorPlayerName = village.createPlayerName,
             status = VillageStatus(village.villageStatusCodeAsVillageStatus),
+            rooms = null,
             setting = convertToVillageSetting(village.villageSettingsAsOne.get(), village.messageRestrictionList),
             participant = VillageParticipants(count = village.participantCount),
             spectator = VillageParticipants(count = village.visitorCount),
             days = VillageDays( // 最新の1日だけ
                 list = village.villageDayList.firstOrNull()?.let {
                     listOf(convertToVillageDay(it))
-                }.orEmpty()
+                }.orEmpty(),
+                epilogueDay = village.epilogueDay
             ),
             winCamp = village.winCampCodeAsCamp?.let { com.ort.wolfmansion.domain.model.camp.Camp(it) }
         )
@@ -83,15 +97,30 @@ object VillageDataConverter {
     ): VillageParticipant {
         return VillageParticipant(
             id = vp.villagePlayerId,
-            charaId = vp.charaId,
-            playerId = vp.playerId,
-            roomNo = vp.roomNumber,
+            chara = convertCharaToChara(vp.chara.get()),
+            player = convertPlayerToSimplePlayer(vp.player.get()),
+            room = vp.roomNumber?.let { VillageRoom(it) },
             dead = if (vp.isDead) convertToDead(vp, villageDays) else null,
             isSpectator = vp.isSpectator,
             isGone = vp.isGone,
             skill = Optional.ofNullable(vp.skillCodeAsSkill).map { Skill(it) }.orElse(null),
             skillRequest = SkillRequest(vp.requestSkillCodeAsSkill, vp.secondRequestSkillCodeAsSkill),
-            isWin = vp.isWin
+            isWin = vp.isWin,
+            lastAccessDatetime = vp.lastAccessDatetime
+        )
+    }
+
+    private fun convertToVillageRooms(
+        village: Village
+    ): VillageRooms? {
+        if (village.villagePlayerList.none { it.roomNumber != null }) return null
+
+        return VillageRooms(
+            list = village.villagePlayerList
+                .filter { it.roomNumber != null }
+                .map { VillageRoom(no = it.roomNumber) },
+            width = village.roomSizeWidth,
+            height = village.roomSizeHeight
         )
     }
 
@@ -154,6 +183,49 @@ object VillageDataConverter {
             password = VillagePassword(
                 joinPassword = settings.joinPassword
             )
+        )
+    }
+
+    // ===================================================================================
+    //                                                                             Mapping
+    //                                                                             =======
+    private fun convertCharaToChara(chara: com.ort.dbflute.exentity.Chara): com.ort.wolfmansion.domain.model.charachip.Chara {
+        return com.ort.wolfmansion.domain.model.charachip.Chara(
+            id = chara.charaId,
+            name = CharaName(
+                name = chara.charaName,
+                shortName = chara.charaShortName
+            ),
+            charachipId = chara.charaGroupId,
+            defaultMessage = CharaDefaultMessage(
+                joinMessage = chara.defaultJoinMessage,
+                firstDayMessage = chara.defaultFirstdayMessage
+            ),
+            display = CharaSize(
+                width = chara.displayWidth,
+                height = chara.displayHeight
+            ),
+            faces = CharaFaces(
+                list = chara.charaImageList.map { image ->
+                    CharaFace(
+                        type = image.faceTypeCode,
+                        name = image.faceTypeCodeAsFaceType.alias(),
+                        imageUrl = image.charaImgUrl
+                    )
+                }
+            )
+        )
+    }
+
+    private fun convertPlayerToSimplePlayer(
+        player: Player
+    ): com.ort.wolfmansion.domain.model.player.Player {
+        return com.ort.wolfmansion.domain.model.player.Player(
+            id = player.playerId,
+            name = player.playerName,
+            isRestrictedParticipation = player.isRestrictedParticipation,
+            participatingNotSolvedVillageIdList = listOf(),
+            createNotSolvedVillageIdList = listOf()
         )
     }
 }

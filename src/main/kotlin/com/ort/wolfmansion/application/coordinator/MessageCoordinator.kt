@@ -2,6 +2,7 @@ package com.ort.wolfmansion.application.coordinator
 
 import com.ort.dbflute.allcommon.CDef
 import com.ort.wolfmansion.application.service.MessageService
+import com.ort.wolfmansion.application.service.VillageService
 import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.message.MessageQuery
 import com.ort.wolfmansion.domain.model.message.Messages
@@ -15,28 +16,29 @@ import java.time.LocalDateTime
 class MessageCoordinator(
     val dayChangeCoordinator: DayChangeCoordinator,
     val villageCoordinator: VillageCoordinator,
+    val villageService: VillageService,
     val messageService: MessageService,
     // domain service
     val messageDomainDomainService: com.ort.wolfmansion.domain.service.message.MessageDomainService
 ) {
 
-    fun findMessageList(
+    fun findMessages(
         village: Village,
         day: Int,
-        noonnight: String,
         user: WolfMansionUser?,
-        from: Long?,
         pageSize: Int?,
-        pageNum: Int?,
-        keyword: String?,
-        messageTypeList: List<CDef.MessageType>?,
-        participantIdList: List<Int>?
+        pageNum: Int?
     ): Messages {
         val participant: VillageParticipant? = villageCoordinator.findParticipant(village, user)
-        val availableMessageTypeList = messageDomainDomainService.viewableMessageTypeList(village, participant, day, user?.authority)
+        val availableMessageTypeList =
+            messageDomainDomainService.viewableMessageTypeList(
+                village,
+                participant,
+                day,
+                user?.authority
+            )
         val query = MessageQuery(
             myself = participant,
-            messageTypeList = messageTypeList,
             pageSize = pageSize,
             pageNum = pageNum,
             availableMessageTypeList = availableMessageTypeList
@@ -46,6 +48,9 @@ class MessageCoordinator(
             day = day,
             query = query
         )
+        // 最新アクセス日時を更新
+        participant?.let { villageService.updateLastAccessDatetime(village.id, it.id) }
+        // 日付更新
         dayChangeCoordinator.dayChangeIfNeeded(village)
         return messages
     }
@@ -56,7 +61,7 @@ class MessageCoordinator(
         else messageService.findMessage(village.id, CDef.MessageType.codeOf(messageType), messageNumber) ?: return null
     }
 
-    fun findLatestMessagesUnixTimeMilli(
+    fun findLatestMessagesDatetime(
         village: Village,
         user: WolfMansionUser?
     ): LocalDateTime? {
