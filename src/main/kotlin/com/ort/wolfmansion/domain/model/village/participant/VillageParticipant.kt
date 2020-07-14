@@ -6,6 +6,7 @@ import com.ort.wolfmansion.domain.model.dead.Dead
 import com.ort.wolfmansion.domain.model.player.Player
 import com.ort.wolfmansion.domain.model.skill.Skill
 import com.ort.wolfmansion.domain.model.skill.SkillRequest
+import com.ort.wolfmansion.domain.model.village.Village
 import com.ort.wolfmansion.domain.model.village.VillageDay
 import com.ort.wolfmansion.domain.model.village.room.VillageRoom
 import java.time.LocalDateTime
@@ -189,5 +190,11 @@ data class VillageParticipant(
         if (skillRequest.first.code != participant.skillRequest.first.code) return true
         if (skillRequest.second.code != participant.skillRequest.second.code) return true
         return false
+    }
+
+    fun isViewableSpoilerContent(village: Village): Boolean? {
+        // 墓下役職公開
+        return village.setting.rules.openSkillInGrave
+            && (dead != null || isSpectator)
     }
 }

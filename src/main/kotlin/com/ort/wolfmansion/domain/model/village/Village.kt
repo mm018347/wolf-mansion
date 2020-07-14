@@ -264,6 +264,7 @@ data class Village(
         restrict.assertSay(messageContent, status, latestDayMessageList)
     }
 
+    fun isAvailableSpoilerContent(): Boolean = status.isSolved()
 
     // ===================================================================================
     //                                                                              update

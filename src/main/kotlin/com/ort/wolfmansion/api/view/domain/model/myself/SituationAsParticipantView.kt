@@ -16,7 +16,8 @@ data class SituationAsParticipantView(
     val say: SaySituationView,
     val ability: AbilitySituationsView,
     val vote: VoteSituationView,
-    val creator: CreatorSituation
+    val creator: CreatorSituation,
+    val viewableSpoilerContent: Boolean
 ) {
     constructor(
         situation: SituationAsParticipant,
@@ -29,6 +30,7 @@ data class SituationAsParticipantView(
         say = SaySituationView(situation.say, village),
         ability = AbilitySituationsView(situation.ability, village),
         vote = VoteSituationView(situation.vote, village),
-        creator = situation.creator
+        creator = situation.creator,
+        viewableSpoilerContent = situation.viewableSpoilerContent
     )
 }

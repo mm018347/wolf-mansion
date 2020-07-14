@@ -335,7 +335,8 @@ class VillageCoordinator(
             say = sayService.convertToSituation(village, participant, latestDayMessageList, charas),
             ability = abilityDomainService.convertToSituation(participant, village, abilities),
             vote = voteDomainService.convertToSituation(village, participant, votes),
-            creator = settingService.convertToSituation(village, participant)
+            creator = settingService.convertToSituation(village, participant),
+            viewableSpoilerContent = village.isAvailableSpoilerContent() || participant?.isViewableSpoilerContent(village) ?: false
         )
     }
 

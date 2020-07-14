@@ -9,10 +9,13 @@ data class VillageAbilities(
 ) {
 
     fun filterLatestday(village: Village): VillageAbilities =
-        this.copy(list = list.filter { it.day == village.days.latestDay().day })
+        this.filterByDay(village.days.latestDay().day)
 
     fun filterYesterday(village: Village): VillageAbilities =
-        this.copy(list = list.filter { it.day == village.days.yesterday().day })
+        this.filterByDay(village.days.yesterday().day)
+
+    fun filterByDay(day: Int): VillageAbilities =
+        this.copy(list = list.filter { it.day == day })
 
     fun filterByAbility(abilityType: AbilityType): VillageAbilities =
         this.copy(list = list.filter { it.abilityType.code == abilityType.code })

@@ -1,8 +1,16 @@
 package com.ort.wolfmansion.api.view.model.village
 
+import com.ort.dbflute.allcommon.CDef
 import com.ort.wolfmansion.api.view.domain.model.myself.SituationAsParticipantView
 import com.ort.wolfmansion.api.view.domain.model.village.VillageView
 import com.ort.wolfmansion.api.view.domain.model.village.participant.VillageParticipantView
+import com.ort.wolfmansion.domain.model.ability.AbilityType
+import com.ort.wolfmansion.domain.model.myself.SituationAsParticipant
+import com.ort.wolfmansion.domain.model.village.Village
+import com.ort.wolfmansion.domain.model.village.ability.VillageAbilities
+import com.ort.wolfmansion.domain.model.village.footstep.VillageFootsteps
+import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
+import com.ort.wolfmansion.domain.model.village.vote.VillageVotes
 import java.time.LocalDateTime
 
 data class VillageModel(
@@ -11,28 +19,63 @@ data class VillageModel(
     /** 何日めか */
     val day: Int,
     /** 次回更新日時 */
-    val dayChangeDatetime: LocalDateTime,
+    val dayChangeDatetime: LocalDateTime?,
     /** 参加情報 */
     val participateSituation: SituationAsParticipantView,
-    /** ネタバレ情報を表示するか */
-    val dispSpoilerContent: Boolean,
+    /** ネタバレ切り替えを表示するか */
+    val dispSpoilerSwitch: Boolean,
     /** ランダムキーワード(カンマ区切り) */
     val randomKeywords: String,
 
     // 状況欄
     /** 全体状況 */
-    val actionSituationList: List<VillageDaySituationModel>,
+    val actionSituationList: VillageDaySituationsModel,
     /** 投票 */
     val votes: VillageVotesModel,
     /** 足音 */
-    val footsteps: List<VillageDayFootstepsModel>
+    val footsteps: VillageDayFootstepsModel
 ) {
-//    constructor(
-//        village: Village,
-//        day: Int
-//    ) : this(
-//
-//    )
+    constructor(
+        village: Village,
+        day: Int,
+        situation: SituationAsParticipant,
+        randomKeywordList: List<String>,
+        abilities: VillageAbilities,
+        votes: VillageVotes,
+        footsteps: VillageFootsteps
+    ) : this(
+        village = VillageView(village),
+        day = day,
+        dayChangeDatetime = if (village.status.isFinishedVillage()) null
+        else village.days.latestDay().dayChangeDatetime,
+        participateSituation = SituationAsParticipantView(situation, village),
+        dispSpoilerSwitch = village.status.isSolved(),
+        randomKeywords = randomKeywordList.joinToString(","),
+        actionSituationList = VillageDaySituationsModel(village, day, abilities),
+        votes = VillageVotesModel(village, votes),
+        footsteps = VillageDayFootstepsModel(village, day, footsteps)
+    )
+}
+
+data class VillageDaySituationsModel(
+    // 2dから現在の日付まで表示する
+    val list: List<VillageDaySituationModel>
+) {
+    constructor(
+        village: Village,
+        day: Int,
+        abilities: VillageAbilities
+    ) : this(
+        list = village.days.list
+            .filter { it.day in 2..day }
+            .map {
+                VillageDaySituationModel(
+                    village,
+                    it.day,
+                    abilities.filterByDay(it.day - 1)
+                )
+            }
+    )
 }
 
 data class VillageDaySituationModel(
@@ -44,19 +87,119 @@ data class VillageDaySituationModel(
     val guardedChara: String?,
     val attack: String?,
     val investigation: String?
-)
+) {
+    constructor(
+        village: Village,
+        day: Int,
+        abilities: VillageAbilities
+    ) : this(
+        day = day,
+        attackedChara = village.participant.list
+            .filter { it.dead?.villageDay?.day == day && it.dead.isMiserable() }
+            .map { it.shortName() }
+            .shuffledAndJoin(),
+        executedChara = village.participant.list
+            .filter { it.dead?.villageDay?.day == day && it.dead.isExecuted() }
+            .map { it.shortName() }
+            .shuffledAndJoin(),
+        suddenlyDeathChara = village.participant.list
+            .filter { it.dead?.villageDay?.day == day && it.dead.isSuddenly() }
+            .map { it.shortName() }
+            .shuffledAndJoin(),
+        divinedChara = abilities.filterByAbility(AbilityType(CDef.AbilityType.占い)).list
+            .joinToString("\n") {
+                val myself = village.participant.member(it.myselfId).shortName()
+                val target = village.participant.member(it.targetId!!).shortName()
+                "$myself → $target"
+            },
+        guardedChara = abilities.filterByAbility(AbilityType(CDef.AbilityType.護衛)).list
+            .joinToString("\n") {
+                val myself = village.participant.member(it.myselfId).shortName()
+                val target = village.participant.member(it.targetId!!).shortName()
+                "$myself → $target"
+            },
+        attack = abilities.filterByAbility(AbilityType(CDef.AbilityType.護衛)).list
+            .joinToString("\n") {
+                val myself = village.participant.member(it.myselfId).shortName()
+                val target = village.participant.member(it.targetId!!).shortName()
+                "$myself → $target"
+            },
+        investigation = abilities.filterByAbility(AbilityType(CDef.AbilityType.捜査)).list
+            .joinToString("\n") {
+                val myself = village.participant.member(it.myselfId).shortName()
+                "$myself → $${it.targetFootstep}"
+            }
+    )
+
+    companion object {
+        private fun List<String>.shuffledAndJoin(): String {
+            return if (this.isEmpty()) "なし"
+            else this.shuffled().joinToString("、")
+        }
+    }
+}
 
 data class VillageVotesModel(
-    val maxVoteCount: Int,
-    val memberVoteList: List<VillageMemberVoteModel>
-)
+    var maxVoteCount: Int,
+    var memberVoteList: List<VillageMemberVoteModel>
+) {
+    constructor(
+        village: Village,
+        votes: VillageVotes
+    ) : this(0, listOf()) {
+        memberVoteList = village.participant.list
+            .map {
+                VillageMemberVoteModel(
+                    village = village,
+                    myself = it,
+                    votes = votes.filterByMyself(it.id)
+                )
+            }
+            .sortedByDescending { it.targetList.size }
+        maxVoteCount = memberVoteList.map { it.targetList.size }.max() ?: 0
+    }
+}
 
 data class VillageMemberVoteModel(
     val myself: VillageParticipantView,
     val targetList: List<VillageParticipantView>
-)
+) {
+    constructor(
+        village: Village,
+        myself: VillageParticipant,
+        votes: VillageVotes
+    ) : this(
+        myself = VillageParticipantView(village, myself),
+        targetList = votes.list.sortedBy { it.day }.map {
+            VillageParticipantView(
+                village = village,
+                participant = village.participant.member(it.targetId)
+            )
+        }
+    )
+}
 
 data class VillageDayFootstepsModel(
+    // 2dから現在の日付までを表示する
+    val list: List<VillageDayFootstepModel>
+) {
+    constructor(
+        village: Village,
+        day: Int,
+        footsteps: VillageFootsteps
+    ) : this(
+        list = village.days.list
+            .filter { it.day in 2..day }
+            .map {
+                VillageDayFootstepModel(
+                    1, "" // TODO
+                )
+            }
+    )
+}
+
+data class VillageDayFootstepModel(
     val day: Int,
     val footsteps: String
-)
+) {
+}

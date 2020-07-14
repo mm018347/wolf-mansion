@@ -10,4 +10,12 @@ data class VillageVotes(
     fun add(villageVotes: VillageVotes): VillageVotes {
         return VillageVotes(this.list + villageVotes.list)
     }
+
+    fun filterByMyself(id: Int): VillageVotes {
+        return this.copy(list = list.filter { it.myselfId == id })
+    }
+
+    fun filterByDay(day: Int): VillageVotes {
+        return this.copy(list = list.filter { it.day == day })
+    }
 }

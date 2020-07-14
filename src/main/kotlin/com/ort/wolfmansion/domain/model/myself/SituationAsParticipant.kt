@@ -10,6 +10,7 @@ data class SituationAsParticipant(
     val say: SaySituation,
     val ability: AbilitySituations,
     val vote: VoteSituation,
-    val creator: CreatorSituation
+    val creator: CreatorSituation,
+    val viewableSpoilerContent: Boolean
 ) {
 }
