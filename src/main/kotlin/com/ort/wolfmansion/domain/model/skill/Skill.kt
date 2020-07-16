@@ -17,11 +17,16 @@ data class Skill(
 
     companion object {
 
-        // TODO 追加
         private val skillAbilityTypeListMap = mapOf(
             CDef.Skill.人狼 to listOf(CDef.AbilityType.襲撃),
+            CDef.Skill.呪狼 to listOf(CDef.AbilityType.襲撃),
+            CDef.Skill.智狼 to listOf(CDef.AbilityType.襲撃),
             CDef.Skill.占い師 to listOf(CDef.AbilityType.占い),
-            CDef.Skill.狩人 to listOf(CDef.AbilityType.護衛)
+            CDef.Skill.賢者 to listOf(CDef.AbilityType.占い),
+            CDef.Skill.占星術師 to listOf(CDef.AbilityType.占い),
+            CDef.Skill.狩人 to listOf(CDef.AbilityType.護衛),
+            CDef.Skill.罠師 to listOf(CDef.AbilityType.罠設置),
+            CDef.Skill.爆弾魔 to listOf(CDef.AbilityType.爆弾設置)
         )
 
         fun skillByShortName(shortName: String): Skill? {

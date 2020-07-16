@@ -55,6 +55,8 @@ data class VillageParticipants(
         return list.filter { predicate(it) }.shuffled().firstOrNull()
     }
 
+    fun findByRoomNo(no: Int): VillageParticipant? = list.firstOrNull { it.room?.no == no }
+
     // ===================================================================================
     //                                                                              update
     //                                                                              ======

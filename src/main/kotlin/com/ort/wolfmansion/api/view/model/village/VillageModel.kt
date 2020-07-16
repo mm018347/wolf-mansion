@@ -10,6 +10,7 @@ import com.ort.wolfmansion.domain.model.village.Village
 import com.ort.wolfmansion.domain.model.village.ability.VillageAbilities
 import com.ort.wolfmansion.domain.model.village.footstep.VillageFootsteps
 import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
+import com.ort.wolfmansion.domain.model.village.participant.VillageParticipants
 import com.ort.wolfmansion.domain.model.village.vote.VillageVotes
 import java.time.LocalDateTime
 
@@ -51,9 +52,19 @@ data class VillageModel(
         participateSituation = SituationAsParticipantView(situation, village),
         dispSpoilerSwitch = village.status.isSolved(),
         randomKeywords = randomKeywordList.joinToString(","),
-        actionSituationList = VillageDaySituationsModel(village, day, abilities),
+        actionSituationList = VillageDaySituationsModel(
+            village,
+            day,
+            abilities,
+            situation.viewableSpoilerContent
+        ),
         votes = VillageVotesModel(village, votes),
-        footsteps = VillageDayFootstepsModel(village, day, footsteps)
+        footsteps = VillageDayFootstepsModel(
+            village,
+            day,
+            footsteps,
+            situation.viewableSpoilerContent
+        )
     )
 }
 
@@ -64,7 +75,8 @@ data class VillageDaySituationsModel(
     constructor(
         village: Village,
         day: Int,
-        abilities: VillageAbilities
+        abilities: VillageAbilities,
+        viewableSpoilerContent: Boolean
     ) : this(
         list = village.days.list
             .filter { it.day in 2..day }
@@ -72,7 +84,8 @@ data class VillageDaySituationsModel(
                 VillageDaySituationModel(
                     village,
                     it.day,
-                    abilities.filterByDay(it.day - 1)
+                    abilities.filterByDay(it.day - 1),
+                    viewableSpoilerContent
                 )
             }
     )
@@ -91,7 +104,8 @@ data class VillageDaySituationModel(
     constructor(
         village: Village,
         day: Int,
-        abilities: VillageAbilities
+        abilities: VillageAbilities,
+        viewableSpoilerContent: Boolean
     ) : this(
         day = day,
         attackedChara = village.participant.list
@@ -106,29 +120,29 @@ data class VillageDaySituationModel(
             .filter { it.dead?.villageDay?.day == day && it.dead.isSuddenly() }
             .map { it.shortName() }
             .shuffledAndJoin(),
-        divinedChara = abilities.filterByAbility(AbilityType(CDef.AbilityType.占い)).list
+        divinedChara = if (viewableSpoilerContent) abilities.filterByAbility(AbilityType(CDef.AbilityType.占い)).list
             .joinToString("\n") {
                 val myself = village.participant.member(it.myselfId).shortName()
                 val target = village.participant.member(it.targetId!!).shortName()
                 "$myself → $target"
-            },
-        guardedChara = abilities.filterByAbility(AbilityType(CDef.AbilityType.護衛)).list
+            } else null,
+        guardedChara = if (viewableSpoilerContent) abilities.filterByAbility(AbilityType(CDef.AbilityType.護衛)).list
             .joinToString("\n") {
                 val myself = village.participant.member(it.myselfId).shortName()
                 val target = village.participant.member(it.targetId!!).shortName()
                 "$myself → $target"
-            },
-        attack = abilities.filterByAbility(AbilityType(CDef.AbilityType.護衛)).list
+            } else null,
+        attack = if (viewableSpoilerContent) abilities.filterByAbility(AbilityType(CDef.AbilityType.護衛)).list
             .joinToString("\n") {
                 val myself = village.participant.member(it.myselfId).shortName()
                 val target = village.participant.member(it.targetId!!).shortName()
                 "$myself → $target"
-            },
-        investigation = abilities.filterByAbility(AbilityType(CDef.AbilityType.捜査)).list
+            } else null,
+        investigation = if (viewableSpoilerContent) abilities.filterByAbility(AbilityType(CDef.AbilityType.捜査)).list
             .joinToString("\n") {
                 val myself = village.participant.member(it.myselfId).shortName()
                 "$myself → $${it.targetFootstep}"
-            }
+            } else null
     )
 
     companion object {
@@ -186,13 +200,17 @@ data class VillageDayFootstepsModel(
     constructor(
         village: Village,
         day: Int,
-        footsteps: VillageFootsteps
+        footsteps: VillageFootsteps,
+        viewableSpoilerContent: Boolean
     ) : this(
         list = village.days.list
             .filter { it.day in 2..day }
             .map {
                 VillageDayFootstepModel(
-                    1, "" // TODO
+                    day,
+                    footsteps,
+                    village.participant,
+                    viewableSpoilerContent
                 )
             }
     )
@@ -202,4 +220,16 @@ data class VillageDayFootstepModel(
     val day: Int,
     val footsteps: String
 ) {
+    constructor(
+        day: Int,
+        footsteps: VillageFootsteps,
+        participants: VillageParticipants,
+        viewableSpoilerContent: Boolean
+    ) : this(
+        day = day,
+        footsteps = if (viewableSpoilerContent)
+            footsteps.convertToDayDispFootstepsWithSkill(participants, day - 1)
+        else
+            footsteps.convertToDayDispFootsteps(participants, day - 1)
+    )
 }
