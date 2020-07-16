@@ -9,8 +9,8 @@ data class VillageFootstep(
 ) {
     private val noFootstep: String = "なし"
 
-    fun convertToDispOnlyAlive(participants: VillageParticipants): String {
-        if (footsteps == null || footsteps == noFootstep) return noFootstep
+    fun convertToDispOnlyAlive(participants: VillageParticipants): VillageFootstep {
+        if (footsteps == null || footsteps == noFootstep) return this.copy(footsteps = noFootstep)
 
         val footstepList = footsteps.split(",").filter {
             // 死亡していなければ残す
@@ -19,7 +19,12 @@ data class VillageFootstep(
                 (participant.isAlive() || participant.dead!!.villageDay.day > day + 1)
         }.map { it.padStart(2, '0') }
 
-        return if (footstepList.isEmpty()) noFootstep else footstepList.joinToString(", ")
+        return if (footstepList.isEmpty()) this.copy(footsteps = noFootstep)
+        else this.copy(footsteps = footstepList.joinToString(", "))
+    }
+
+    fun convertToDispStrOnlyAlive(participants: VillageParticipants): String {
+        return this.convertToDispOnlyAlive(participants).footsteps!!
     }
 
     fun convertToDispStrWithSkill(participants: VillageParticipants): String {

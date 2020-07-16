@@ -237,7 +237,19 @@ map:{
         }
     }
     ; AbilityType = list:{
-        ; map:{topComment=能力種別; codeType=String}
+        ; map:{
+        	; topComment=能力種別; codeType=String
+        	; groupingMap = map:{
+				; targetSelectType = map:{
+					; groupComment=対象選択型
+					; elementList= list:{襲撃;占い;護衛;罠設置;爆弾設置}
+				}
+				; footstepSelectType = map:{
+					; groupComment=足音選択型
+					; elementList= list:{捜査}
+				}
+			}
+        }
         ; map:{
             ; table=ABILITY_TYPE
             ; code=ABILITY_TYPE_CODE; name=ABILITY_TYPE_NAME

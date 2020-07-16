@@ -873,6 +873,26 @@ public abstract class AbstractBsAbilityCQ extends AbstractConditionQuery {
         doSetAbilityTypeCode_InScope(cTStrL(cdefList));
     }
 
+    /**
+     * InScope {in ('a', 'b')}. As AbilityType. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 能力種別 <br>
+     * 対象選択型 <br>
+     * The group elements:[襲撃, 占い, 護衛, 罠設置, 爆弾設置]
+     */
+    public void setAbilityTypeCode_InScope_TargetSelectType() {
+        setAbilityTypeCode_InScope_AsAbilityType(CDef.AbilityType.listOfTargetSelectType());
+    }
+
+    /**
+     * InScope {in ('a', 'b')}. As AbilityType. And NullOrEmptyIgnored, NullOrEmptyElementIgnored, SeveralRegistered. <br>
+     * 能力種別 <br>
+     * 足音選択型 <br>
+     * The group elements:[捜査]
+     */
+    public void setAbilityTypeCode_InScope_FootstepSelectType() {
+        setAbilityTypeCode_InScope_AsAbilityType(CDef.AbilityType.listOfFootstepSelectType());
+    }
+
     protected void doSetAbilityTypeCode_InScope(Collection<String> abilityTypeCodeList) {
         regINS(CK_INS, cTL(abilityTypeCodeList), xgetCValueAbilityTypeCode(), "ABILITY_TYPE_CODE");
     }

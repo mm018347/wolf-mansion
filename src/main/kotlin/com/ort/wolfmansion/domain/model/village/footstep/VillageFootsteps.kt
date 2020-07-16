@@ -21,16 +21,24 @@ data class VillageFootsteps(
     fun convertToDayDispFootsteps(
         participants: VillageParticipants,
         day: Int // セットした日
-    ): String {
+    ): VillageFootsteps {
         val footstepList = this
             .filterByDay(day)
             .convertToDispOnlyAlive(participants)
-            .filterNot { it.isNullOrEmpty() || it == "なし" }
-        if (footstepList.isEmpty()) return noFootstepMessage
-        return footstepList.sorted().joinToString("\n")
+            .filterNot { it.footsteps.isNullOrEmpty() || it.footsteps == "なし" }
+        return VillageFootsteps(list = footstepList.sortedBy { it.footsteps })
     }
 
-    fun convertToDayDispFootstepsWithSkill(
+    fun convertToDayDispFootstepsStr(
+        participants: VillageParticipants,
+        day: Int // セットした日
+    ): String {
+        val footstepList = this.convertToDayDispFootsteps(participants, day)
+        if (footstepList.list.isEmpty()) return noFootstepMessage
+        return footstepList.list.map { it.footsteps }.joinToString("\n")
+    }
+
+    fun convertToDayDispFootstepsStrWithSkill(
         participants: VillageParticipants,
         day: Int // セットした日
     ): String {
@@ -41,7 +49,7 @@ data class VillageFootsteps(
         }
     }
 
-    private fun convertToDispOnlyAlive(participants: VillageParticipants): List<String> {
+    private fun convertToDispOnlyAlive(participants: VillageParticipants): List<VillageFootstep> {
         return list.map { it.convertToDispOnlyAlive(participants) }
     }
 }

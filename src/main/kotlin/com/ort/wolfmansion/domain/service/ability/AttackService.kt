@@ -8,17 +8,19 @@ import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.village.Village
 import com.ort.wolfmansion.domain.model.village.ability.VillageAbilities
 import com.ort.wolfmansion.domain.model.village.ability.VillageAbility
+import com.ort.wolfmansion.domain.model.village.footstep.VillageFootsteps
 import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
 import org.springframework.stereotype.Service
 
 @Service
-class AttackService {
+class AttackService : IAbilityDomainService {
 
-    private val abilityType = AbilityType(CDef.AbilityType.襲撃)
+    override fun getAbilityType(): AbilityType = AbilityType(CDef.AbilityType.襲撃)
 
-    fun getSelectableTargetList(
+    override fun getSelectableTargetList(
         village: Village,
-        participant: VillageParticipant?
+        participant: VillageParticipant?,
+        villageAbilities: VillageAbilities
     ): List<VillageParticipant> {
         participant ?: return listOf()
 
@@ -27,11 +29,12 @@ class AttackService {
             listOf(village.dummyParticipant())
         } else {
             // 襲撃対象に選べる & 生存している
-            village.participant.filterAlive().list.filter { !it.skill!!.toCdef().isNotSelectableAttack }
+            village.participant.filterAlive().list
+                .filter { !it.skill!!.toCdef().isNotSelectableAttack }
         }
     }
 
-    fun getSelectingTarget(
+    override fun getSelectingTarget(
         village: Village,
         participant: VillageParticipant?,
         villageAbilities: VillageAbilities
@@ -44,49 +47,74 @@ class AttackService {
 
         val targetVillageParticipantId = villageAbilities
             .filterLatestday(village)
-            .filterByAbility(abilityType)
+            .filterByAbility(getAbilityType())
             .list
             .find { attackableParticipantIdList.contains(it.myselfId) }?.targetId ?: return null
 
         return village.participant.member(targetVillageParticipantId)
     }
 
-    fun createSetMessage(myChara: Chara, targetChara: Chara?): String =
-        "${myChara.name.name}が襲撃対象を${targetChara?.name?.name ?: "なし"}に設定しました。"
+    override fun getSelectableFootstepList(village: Village, participant: VillageParticipant?, footsteps: VillageFootsteps): List<String> {
+        return listOf() // 足音選択型でないので不要
+    }
 
-    fun getDefaultAbility(village: Village): VillageAbility? {
+    override fun getSelectingFootstep(village: Village, participant: VillageParticipant?, villageAbilities: VillageAbilities): String? {
+        return null // 足音選択型でないので不要
+    }
+
+    override fun createSetMessage(
+        myself: VillageParticipant,
+        target: VillageParticipant?,
+        footstep: String?
+    ): String =
+        "襲撃者を${myself.name()}に、襲撃対象を${checkNotNull(target?.name())}に、通過する部屋を${footstep ?: "なし"}に設定しました。"
+
+    override fun getDefaultAbilityList(village: Village, villageAbilities: VillageAbilities): List<VillageAbility> {
         // 進行中のみ
-        if (!village.status.isProgress()) return null
+        if (!village.status.isProgress()) return listOf()
         // 最新日id
         val latestDay = village.days.latestDay()
         // 襲撃者は生存している人狼からランダムに
-        val wolf = village.participant.filterAlive().findRandom {
+        val attackerCandidateList = village.participant.filterAlive().list.filter {
             it.skill!!.toCdef().isHasAttackAbility
-        } ?: return null // 生存している人狼がいないので襲撃なし
+        }
+
+        val wolf = if (attackerCandidateList.size > 1 && !village.setting.rules.availableSameWolfAttack) {
+            // 連続襲撃なし
+            attackerCandidateList.filterNot {
+                val yesterdayAttackerId = villageAbilities.filterYesterday(village).filterByAbility(getAbilityType()).list.firstOrNull()?.myselfId
+                it.id == yesterdayAttackerId
+            }.shuffled().firstOrNull()
+        } else {
+            // 連続襲撃ありor残りひとり
+            attackerCandidateList.shuffled().firstOrNull()
+        } ?: return listOf() // 生存している人狼がいないので襲撃なし
 
         return if (latestDay.day == 1) { // 1日目はダミー固定
-            VillageAbility(
-                day = latestDay.day,
-                myselfId = wolf.id,
-                targetId = village.dummyParticipant().id,
-                targetFootstep = null,
-                abilityType = abilityType
+            listOf(
+                VillageAbility(
+                    day = latestDay.day,
+                    myselfId = wolf.id,
+                    targetId = village.dummyParticipant().id,
+                    targetFootstep = null,
+                    abilityType = getAbilityType()
+                )
             )
         } else { // 2日目以降は生存者からランダム
             val target = village.participant.filterAlive().findRandom {
                 !it.skill!!.toCdef().isHasAttackAbility
-            } ?: return null // 生存している対象がいないので襲撃なし
-            return VillageAbility(
+            } ?: return listOf() // 生存している対象がいないので襲撃なし
+            listOf(VillageAbility(
                 day = latestDay.day,
                 myselfId = wolf.id,
                 targetId = target.id,
                 targetFootstep = null,
-                abilityType = abilityType
-            )
+                abilityType = getAbilityType()
+            ))
         }
     }
 
-    fun process(dayChange: DayChange): DayChange {
+    override fun processDayChangeAction(dayChange: DayChange): DayChange {
         val latestDay = dayChange.village.days.latestDay()
         val aliveWolf = dayChange.village.participant.findRandom {
             it.isAlive() && it.skill!!.toCdef().isHasAttackAbility
@@ -96,7 +124,7 @@ class AttackService {
         var messages = dayChange.messages.copy()
 
         // 昨日セットした襲撃
-        dayChange.abilities.filterYesterday(village).filterByAbility(abilityType).list.find {
+        dayChange.abilities.filterYesterday(village).filterByAbility(getAbilityType()).list.find {
             it.targetId != null
         }?.let { ability ->
             // 襲撃メッセージ
@@ -112,10 +140,10 @@ class AttackService {
     }
 
     // 対象なしを選択できるか
-    fun isAvailableNoTarget(): Boolean = false
+    override fun isAvailableNoTarget(): Boolean = false
 
     // 能力行使できるか
-    fun isUsable(participant: VillageParticipant): Boolean = participant.isAlive() // 生存していたら行使できる
+    override fun isUsable(village: Village, participant: VillageParticipant): Boolean = participant.isAlive() // 生存していたら行使できる
 
     // ===================================================================================
     //                                                                        Assist Logic

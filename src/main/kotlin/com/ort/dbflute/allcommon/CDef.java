@@ -1953,7 +1953,29 @@ public interface CDef extends Classification {
         public Map<String, Object> subItemMap() { return Collections.emptyMap(); }
         public ClassificationMeta meta() { return CDef.DefMeta.AbilityType; }
 
+        /**
+         * Is the classification in the group? <br>
+         * 対象選択型 <br>
+         * The group elements:[襲撃, 占い, 護衛, 罠設置, 爆弾設置]
+         * @return The determination, true or false.
+         */
+        public boolean isTargetSelectType() {
+            return 襲撃.equals(this) || 占い.equals(this) || 護衛.equals(this) || 罠設置.equals(this) || 爆弾設置.equals(this);
+        }
+
+        /**
+         * Is the classification in the group? <br>
+         * 足音選択型 <br>
+         * The group elements:[捜査]
+         * @return The determination, true or false.
+         */
+        public boolean isFootstepSelectType() {
+            return 捜査.equals(this);
+        }
+
         public boolean inGroup(String groupName) {
+            if ("targetSelectType".equals(groupName)) { return isTargetSelectType(); }
+            if ("footstepSelectType".equals(groupName)) { return isFootstepSelectType(); }
             return false;
         }
 
@@ -2021,6 +2043,8 @@ public interface CDef extends Classification {
          */
         public static List<AbilityType> listByGroup(String groupName) {
             if (groupName == null) { throw new IllegalArgumentException("The argument 'groupName' should not be null."); }
+            if ("targetSelectType".equalsIgnoreCase(groupName)) { return listOfTargetSelectType(); }
+            if ("footstepSelectType".equalsIgnoreCase(groupName)) { return listOfFootstepSelectType(); }
             throw new ClassificationNotFoundException("Unknown classification group: AbilityType." + groupName);
         }
 
@@ -2037,11 +2061,33 @@ public interface CDef extends Classification {
         }
 
         /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 対象選択型 <br>
+         * The group elements:[襲撃, 占い, 護衛, 罠設置, 爆弾設置]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<AbilityType> listOfTargetSelectType() {
+            return new ArrayList<AbilityType>(Arrays.asList(襲撃, 占い, 護衛, 罠設置, 爆弾設置));
+        }
+
+        /**
+         * Get the list of group classification elements. (returns new copied list) <br>
+         * 足音選択型 <br>
+         * The group elements:[捜査]
+         * @return The snapshot list of classification elements in the group. (NotNull)
+         */
+        public static List<AbilityType> listOfFootstepSelectType() {
+            return new ArrayList<AbilityType>(Arrays.asList(捜査));
+        }
+
+        /**
          * Get the list of classification elements in the specified group. (returns new copied list) <br>
          * @param groupName The string of group name, which is case-sensitive. (NullAllowed: if null, returns empty list)
          * @return The snapshot list of classification elements in the group. (NotNull, EmptyAllowed: if the group is not found)
          */
         public static List<AbilityType> groupOf(String groupName) {
+            if ("targetSelectType".equals(groupName)) { return listOfTargetSelectType(); }
+            if ("footstepSelectType".equals(groupName)) { return listOfFootstepSelectType(); }
             return new ArrayList<AbilityType>(4);
         }
 

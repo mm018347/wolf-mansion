@@ -280,6 +280,26 @@ public abstract class BsAbility extends AbstractEntity implements DomainEntity, 
         return cdef != null ? cdef.equals(CDef.AbilityType.罠設置) : false;
     }
 
+    /**
+     * 対象選択型 <br>
+     * The group elements:[襲撃, 占い, 護衛, 罠設置, 爆弾設置]
+     * @return The determination, true or false.
+     */
+    public boolean isAbilityTypeCode_TargetSelectType() {
+        CDef.AbilityType cdef = getAbilityTypeCodeAsAbilityType();
+        return cdef != null && cdef.isTargetSelectType();
+    }
+
+    /**
+     * 足音選択型 <br>
+     * The group elements:[捜査]
+     * @return The determination, true or false.
+     */
+    public boolean isAbilityTypeCode_FootstepSelectType() {
+        CDef.AbilityType cdef = getAbilityTypeCodeAsAbilityType();
+        return cdef != null && cdef.isFootstepSelectType();
+    }
+
     // ===================================================================================
     //                                                                    Foreign Property
     //                                                                    ================

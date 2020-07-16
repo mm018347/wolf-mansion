@@ -228,8 +228,8 @@ data class VillageDayFootstepModel(
     ) : this(
         day = day,
         footsteps = if (viewableSpoilerContent)
-            footsteps.convertToDayDispFootstepsWithSkill(participants, day - 1)
+            footsteps.convertToDayDispFootstepsStrWithSkill(participants, day - 1)
         else
-            footsteps.convertToDayDispFootsteps(participants, day - 1)
+            footsteps.convertToDayDispFootstepsStr(participants, day - 1)
     )
 }

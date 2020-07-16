@@ -8,17 +8,19 @@ import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.village.Village
 import com.ort.wolfmansion.domain.model.village.ability.VillageAbilities
 import com.ort.wolfmansion.domain.model.village.ability.VillageAbility
+import com.ort.wolfmansion.domain.model.village.footstep.VillageFootsteps
 import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
 import org.springframework.stereotype.Service
 
 @Service
-class DivineService {
+class DivineService : IAbilityDomainService {
 
-    private val abilityType = AbilityType(CDef.AbilityType.占い)
+    override fun getAbilityType(): AbilityType = AbilityType(CDef.AbilityType.占い)
 
-    fun getSelectableTargetList(
+    override fun getSelectableTargetList(
         village: Village,
-        participant: VillageParticipant?
+        participant: VillageParticipant?,
+        villageAbilities: VillageAbilities
     ): List<VillageParticipant> {
         participant ?: return listOf()
 
@@ -26,22 +28,34 @@ class DivineService {
         return village.participant.filterAlive().list.filter { it.id != participant.id }
     }
 
-    fun getSelectingTarget(village: Village, participant: VillageParticipant?, villageAbilities: VillageAbilities): VillageParticipant? {
+    override fun getSelectingTarget(village: Village, participant: VillageParticipant?, villageAbilities: VillageAbilities): VillageParticipant? {
         participant ?: return null
 
         val targetVillageParticipantId = villageAbilities
             .filterLatestday(village)
-            .filterByAbility(abilityType)
+            .filterByAbility(getAbilityType())
             .list
             .find { it.myselfId == participant.id }?.targetId ?: return null
 
         return village.participant.member(targetVillageParticipantId)
     }
 
-    fun createSetMessage(myChara: Chara, targetChara: Chara?): String =
-        "${myChara.name.fullName()}が占い対象を${targetChara?.name?.fullName() ?: "なし"}に設定しました。"
+    override fun getSelectableFootstepList(village: Village, participant: VillageParticipant?, footsteps: VillageFootsteps): List<String> {
+        return listOf() // 足音選択型でないので不要
+    }
 
-    fun getDefaultAbilityList(village: Village): List<VillageAbility> {
+    override fun getSelectingFootstep(village: Village, participant: VillageParticipant?, villageAbilities: VillageAbilities): String? {
+        return null // 足音選択型でないので不要
+    }
+
+    override fun createSetMessage(
+        myself: VillageParticipant,
+        target: VillageParticipant?,
+        footstep: String?
+    ): String =
+        "${myself.name()}が占い対象を${checkNotNull(target?.name())}に、通過する部屋を${footstep ?: "なし"}に設定しました。"
+
+    override fun getDefaultAbilityList(village: Village, villageAbilities: VillageAbilities): List<VillageAbility> {
         // 進行中のみ
         if (!village.status.isProgress()) return listOf()
         // 最新日id
@@ -51,21 +65,19 @@ class DivineService {
             it.skill!!.toCdef().isHasDivineAbility
         }.mapNotNull { seer ->
             // 対象は自分以外の生存者からランダム
-            village.participant
-                .filterAlive()
-                .findRandom { it.id != seer.id }?.let {
-                    VillageAbility(
-                        day = latestVillageDay.day,
-                        myselfId = seer.id,
-                        targetId = it.id,
-                        targetFootstep = null,
-                        abilityType = abilityType
-                    )
-                }
+            this.getSelectableTargetList(village, seer, villageAbilities).shuffled().firstOrNull()?.let {
+                VillageAbility(
+                    day = latestVillageDay.day,
+                    myselfId = seer.id,
+                    targetId = it.id,
+                    targetFootstep = null,
+                    abilityType = getAbilityType()
+                )
+            } // 自分しかいない場合はなし
         }
     }
 
-    fun process(dayChange: DayChange): DayChange {
+    override fun processDayChangeAction(dayChange: DayChange): DayChange {
         val latestDay = dayChange.village.days.latestDay()
         var messages = dayChange.messages.copy()
         var village = dayChange.village.copy()
@@ -89,9 +101,9 @@ class DivineService {
         ).setIsChange(dayChange)
     }
 
-    fun isAvailableNoTarget(): Boolean = false
+    override fun isAvailableNoTarget(): Boolean = false
 
-    fun isUsable(participant: VillageParticipant): Boolean = participant.isAlive() // 生存していたら行使できる
+    override fun isUsable(village: Village, participant: VillageParticipant): Boolean = participant.isAlive() // 生存していたら行使できる
 
     // ===================================================================================
     //                                                                        Assist Logic

@@ -8,47 +8,71 @@ import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.village.Village
 import com.ort.wolfmansion.domain.model.village.ability.VillageAbilities
 import com.ort.wolfmansion.domain.model.village.ability.VillageAbility
+import com.ort.wolfmansion.domain.model.village.footstep.VillageFootsteps
 import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
 import org.springframework.stereotype.Service
 
 @Service
-class GuardService {
+class GuardService : IAbilityDomainService {
 
-    private val abilityType = AbilityType(CDef.AbilityType.護衛)
+    override fun getAbilityType(): AbilityType = AbilityType(CDef.AbilityType.護衛)
 
-    fun getSelectableTargetList(
+    override fun getSelectableTargetList(
         village: Village,
-        participant: VillageParticipant?
+        participant: VillageParticipant?,
+        villageAbilities: VillageAbilities
     ): List<VillageParticipant> {
         participant ?: return listOf()
 
         // 1日目は護衛できない
         if (village.days.latestDay().day <= 1) return listOf()
 
-        // 連続護衛可能なら自分以外の生存者全員
-        // TODO 連続護衛なし
-        return village.participant.list.filter {
-            it.id != participant.id && it.isAlive()
+        val candidateList = village.participant
+            .filterAlive().list
+            .filterNot { it.id == participant.id }
+        return if (village.setting.rules.availableGuardSameTarget) {
+            // 連続護衛可能なら自分以外の生存者全員
+            candidateList
+        } else {
+            // 連続護衛不可なら自分と昨日護衛した人以外
+            val yesterdayTargetId = villageAbilities
+                .filterYesterday(village)
+                .filterByAbility(getAbilityType()).list
+                .firstOrNull { it.myselfId == participant.id }
+                ?.targetId
+            candidateList.filterNot { it.id == yesterdayTargetId }
         }
     }
 
-    fun getSelectingTarget(village: Village, participant: VillageParticipant?, villageAbilities: VillageAbilities): VillageParticipant? {
+    override fun getSelectingTarget(village: Village, participant: VillageParticipant?, villageAbilities: VillageAbilities): VillageParticipant? {
         participant ?: return null
 
         val targetVillageParticipantId = villageAbilities.list.find {
             it.day == village.days.latestDay().day
-                && it.abilityType.code == abilityType.code
+                && it.abilityType.code == getAbilityType().code
                 && it.myselfId == participant.id
         }?.targetId
         targetVillageParticipantId ?: return null
         return village.participant.member(targetVillageParticipantId)
     }
 
-    fun createSetMessage(myChara: Chara, targetChara: Chara?): String {
-        return "${myChara.name.name}が護衛対象を${targetChara?.name?.name ?: "なし"}に設定しました。"
+    override fun getSelectableFootstepList(village: Village, participant: VillageParticipant?, footsteps: VillageFootsteps): List<String> {
+        return listOf() // 足音選択型でないので不要
     }
 
-    fun getDefaultAbilityList(village: Village): List<VillageAbility> {
+    override fun getSelectingFootstep(village: Village, participant: VillageParticipant?, villageAbilities: VillageAbilities): String? {
+        return null // 足音選択型でないので不要
+    }
+
+    override fun createSetMessage(
+        myself: VillageParticipant,
+        target: VillageParticipant?,
+        footstep: String?
+    ): String {
+        return "${myself.name()}が護衛対象を${checkNotNull(target?.name())}に、通過する部屋を${footstep ?: "なし"}に設定しました。"
+    }
+
+    override fun getDefaultAbilityList(village: Village, villageAbilities: VillageAbilities): List<VillageAbility> {
         // 進行中のみ
         if (!village.status.isProgress()) return listOf()
         // 1日目は護衛できない
@@ -61,24 +85,21 @@ class GuardService {
         // 生存している護衛能力持ちごとに
         return village.participant.filterAlive().list.filter {
             it.skill!!.toCdef().isHasGuardAbility
-        }.mapNotNull { seer ->
+        }.mapNotNull { hunter ->
             // 対象は自分以外の生存者からランダム
-            // TODO 連続護衛なし
-            village.participant.filterAlive()
-                .findRandom { it.id != seer.id }?.let {
-                    VillageAbility(
-                        day = latestVillageDay.day,
-                        myselfId = seer.id,
-                        targetId = it.id,
-                        targetFootstep = null,
-                        abilityType = abilityType
-                    )
-                } // 自分しかいない場合null
+            this.getSelectableTargetList(village, hunter, villageAbilities).shuffled().firstOrNull()?.let {
+                VillageAbility(
+                    day = latestVillageDay.day,
+                    myselfId = hunter.id,
+                    targetId = it.id,
+                    targetFootstep = null,
+                    abilityType = getAbilityType()
+                )
+            } // 自分しかいない場合null
         }
     }
 
-    fun process(dayChange: DayChange): DayChange {
-        val latestDay = dayChange.village.days.latestDay()
+    override fun processDayChangeAction(dayChange: DayChange): DayChange {
         var messages = dayChange.messages.copy()
 
         dayChange.village.participant.filterAlive().list.filter {
@@ -96,9 +117,9 @@ class GuardService {
         ).setIsChange(dayChange)
     }
 
-    fun isAvailableNoTarget(): Boolean = false
+    override fun isAvailableNoTarget(): Boolean = false
 
-    fun isUsable(village: Village, participant: VillageParticipant): Boolean {
+    override fun isUsable(village: Village, participant: VillageParticipant): Boolean {
         // 2日目以降、生存していたら行使できる
         return village.days.latestDay().day > 1 && participant.isAlive()
     }

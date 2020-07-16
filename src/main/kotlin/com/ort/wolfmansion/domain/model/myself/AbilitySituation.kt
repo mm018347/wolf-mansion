@@ -5,9 +5,19 @@ import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
 
 data class AbilitySituation(
     val type: AbilityType,
-    val targetList: List<VillageParticipant>,
+    // 誰が(人狼のみ)
+    val selectableAttackerList: List<VillageParticipant>,
+    val attacker: VillageParticipant?,
+    // 対象選択
+    val targetSelectAbility: Boolean,
+    val selectableTargetList: List<VillageParticipant>,
     val target: VillageParticipant?,
+    // 足音選択
+    val footstepSelectAbility: Boolean,
+    val selectableFootstepList: List<String>,
+    val footstep: String?,
+
     val usable: Boolean,
-    val isAvailableNoTarget: Boolean
+    val availableNoTarget: Boolean
 ) {
 }

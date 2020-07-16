@@ -23,7 +23,7 @@ data class VillageParticipantView(
     val skill: Skill?,
     val skillRequest: SkillRequest?,
     val isWin: Boolean?,
-    val lastAccessDatetime: LocalDateTime
+    val lastAccessDatetime: LocalDateTime?
 ) {
     constructor(
         village: Village,
