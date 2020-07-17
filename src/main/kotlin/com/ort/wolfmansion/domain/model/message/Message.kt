@@ -48,6 +48,10 @@ data class Message(
         fun createSeerPrivateMessage(text: String, day: Int, participant: VillageParticipant): Message =
             createSystemMessage(MessageType(CDef.MessageType.白黒占い結果), text, day, participant)
 
+        // 捜査
+        fun createInvastigatePrivateMessage(text: String, day: Int, participant: VillageParticipant): Message =
+            createSystemMessage(MessageType(CDef.MessageType.足音調査結果), text, day, participant)
+
         // ===================================================================================
         //                                                                        Assist Logic
         //                                                                        ============

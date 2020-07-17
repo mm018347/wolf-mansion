@@ -2,7 +2,6 @@ package com.ort.wolfmansion.domain.service.ability
 
 import com.ort.dbflute.allcommon.CDef
 import com.ort.wolfmansion.domain.model.ability.AbilityType
-import com.ort.wolfmansion.domain.model.charachip.Chara
 import com.ort.wolfmansion.domain.model.daychange.DayChange
 import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.village.Village
@@ -78,11 +77,11 @@ class AttackService : IAbilityDomainService {
         val attackerCandidateList = village.participant.filterAlive().list.filter {
             it.skill!!.toCdef().isHasAttackAbility
         }
-
         val wolf = if (attackerCandidateList.size > 1 && !village.setting.rules.availableSameWolfAttack) {
             // 連続襲撃なし
             attackerCandidateList.filterNot {
-                val yesterdayAttackerId = villageAbilities.filterYesterday(village).filterByAbility(getAbilityType()).list.firstOrNull()?.myselfId
+                val yesterdayAttackerId =
+                    villageAbilities.filterYesterday(village).filterByAbility(getAbilityType()).list.firstOrNull()?.myselfId
                 it.id == yesterdayAttackerId
             }.shuffled().firstOrNull()
         } else {
@@ -104,13 +103,15 @@ class AttackService : IAbilityDomainService {
             val target = village.participant.filterAlive().findRandom {
                 !it.skill!!.toCdef().isHasAttackAbility
             } ?: return listOf() // 生存している対象がいないので襲撃なし
-            listOf(VillageAbility(
-                day = latestDay.day,
-                myselfId = wolf.id,
-                targetId = target.id,
-                targetFootstep = null,
-                abilityType = getAbilityType()
-            ))
+            listOf(
+                VillageAbility(
+                    day = latestDay.day,
+                    myselfId = wolf.id,
+                    targetId = target.id,
+                    targetFootstep = null,
+                    abilityType = getAbilityType()
+                )
+            )
         }
     }
 
@@ -131,6 +132,7 @@ class AttackService : IAbilityDomainService {
             messages = messages.add(createAttackMessage(village, aliveWolf, ability))
             // 襲撃成功したら死亡
             if (isAttackSuccess(dayChange, ability.targetId!!)) village = village.attackParticipant(ability.targetId, latestDay)
+            // TODO 智狼
         } ?: return dayChange
 
         return dayChange.copy(
@@ -182,16 +184,14 @@ class AttackService : IAbilityDomainService {
         wolf: VillageParticipant,
         ability: VillageAbility
     ): Message {
-        val targetChara = village.participant.member(ability.targetId!!).chara
-        val text = createAttackMessageString(wolf.chara, targetChara)
+        val target = village.participant.member(ability.targetId!!)
+        val text = createAttackMessageString(wolf, target)
         return Message.createAttackPrivateMessage(text, village.days.latestDay().day)
     }
 
     /**
      * 襲撃メッセージ
-     * @param chara 狼
-     * @param targetChara 被襲撃者
      */
-    private fun createAttackMessageString(chara: Chara, targetChara: Chara): String =
-        "${chara.name.fullName()}達は、${targetChara.name.fullName()}を襲撃した。"
+    private fun createAttackMessageString(wolf: VillageParticipant, target: VillageParticipant): String =
+        "${wolf.name()}達は、${target.name()}を襲撃した。"
 }

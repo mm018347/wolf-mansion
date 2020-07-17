@@ -3,9 +3,11 @@ package com.ort.wolfmansion.domain.service.ability
 import com.ort.dbflute.allcommon.CDef
 import com.ort.wolfmansion.domain.model.ability.AbilityType
 import com.ort.wolfmansion.domain.model.daychange.DayChange
+import com.ort.wolfmansion.domain.model.message.Message
 import com.ort.wolfmansion.domain.model.village.Village
 import com.ort.wolfmansion.domain.model.village.ability.VillageAbilities
 import com.ort.wolfmansion.domain.model.village.ability.VillageAbility
+import com.ort.wolfmansion.domain.model.village.footstep.VillageFootstep
 import com.ort.wolfmansion.domain.model.village.footstep.VillageFootsteps
 import com.ort.wolfmansion.domain.model.village.participant.VillageParticipant
 import org.springframework.stereotype.Service
@@ -93,17 +95,44 @@ class InvestigationService : IAbilityDomainService {
     override fun processDayChangeAction(
         dayChange: DayChange
     ): DayChange {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var messages = dayChange.messages.copy()
+        val village = dayChange.village.copy()
+
+        dayChange.village.participant.filterAlive().list.filter {
+            it.skill!!.toCdef().isHasInvestigateAbility
+        }.forEach { detective ->
+            dayChange.abilities.filterYesterday(village).list.find {
+                it.myselfId == detective.id && it.abilityType.code == getAbilityType().code
+            }?.let { ability ->
+                dayChange.footsteps
+                    .convertToDayDispFootsteps(village.participant, village.days.latestDay().day - 2).list
+                    .shuffled()
+                    .firstOrNull { it.footsteps == ability.targetFootstep }
+                    ?.let {
+                        messages = messages.add(createInvestigateMessage(dayChange.village, it, detective))
+                    }
+            }
+        }
+
+        return dayChange.copy(
+            messages = messages
+        ).setIsChange(dayChange)
     }
 
-    override fun isAvailableNoTarget(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun isAvailableNoTarget(): Boolean = true
+
+    override fun isUsable(village: Village, participant: VillageParticipant): Boolean = participant.isAlive() // 生存していたら行使できる
+
+    // ===================================================================================
+    //                                                                        Assist Logic
+    //                                                                        ============
+    private fun createInvestigateMessage(village: Village, villageFootstep: VillageFootstep, detective: VillageParticipant): Message {
+        val target = village.participant.member(villageFootstep.myselfId)
+        val text = createInvestigateMessageString(detective, target, villageFootstep.footsteps)
+        return Message.createInvastigatePrivateMessage(text, village.days.latestDay().day, detective)
     }
 
-    override fun isUsable(
-        village: Village,
-        participant: VillageParticipant
-    ): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun createInvestigateMessageString(detective: VillageParticipant, target: VillageParticipant, footsteps: String?): String {
+        return "${detective.name()}は、昨日響いた足音${footsteps}について調査した。\n${footsteps}の足音を響かせたのは${target.skill!!.name}のようだ。"
     }
 }

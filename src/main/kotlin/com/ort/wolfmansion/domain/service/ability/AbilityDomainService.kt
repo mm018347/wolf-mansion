@@ -71,6 +71,9 @@ class AbilityDomainService(
         // 護衛
         val guardAbilityList = guardService.getDefaultAbilityList(village, abilities)
         if (guardAbilityList.isNotEmpty()) abilityList.addAll(guardAbilityList)
+        // 捜査
+        val investigateAbilityList = investigationService.getDefaultAbilityList(village, abilities)
+        if (investigateAbilityList.isNotEmpty()) abilityList.addAll(investigateAbilityList)
 
         return VillageAbilities(abilityList)
     }
@@ -110,6 +113,7 @@ class AbilityDomainService(
             CDef.AbilityType.襲撃.code() -> attackDomainService
             CDef.AbilityType.占い.code() -> divineService
             CDef.AbilityType.護衛.code() -> guardService
+            CDef.AbilityType.捜査.code() -> investigationService
             else -> null
         }
     }
@@ -149,7 +153,8 @@ class AbilityDomainService(
         village: Village,
         participant: VillageParticipant,
         abilities: VillageAbilities,
-        abilityType: AbilityType): String? {
+        abilityType: AbilityType
+    ): String? {
         if (!canUseAbility(village, participant)) return null
         return detectDomainService(abilityType)?.getSelectingFootstep(village, participant, abilities)
     }
